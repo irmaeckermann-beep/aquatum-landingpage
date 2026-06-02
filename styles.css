@@ -187,8 +187,7 @@ em { font-style: normal; color: var(--blue-500); }
 
 /* ---------- Calculator ---------- */
 .calc-wrap {
-  display: grid; grid-template-columns: 1fr 1fr; gap: 30px; align-items: stretch;
-  margin-top: 12px;
+  max-width: 680px; margin: 12px auto 0;
 }
 .calc-form, .calc-result {
   background: #fff; border: 1px solid var(--line); border-radius: var(--radius);
