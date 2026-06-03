@@ -65,17 +65,17 @@ calcForm.addEventListener('submit', (e) => {
   let color, title, text, ctaText;
   if (score >= 75) {
     color = getCss('--good');
-    title = 'Solide Wasserqualität – mit Optimierungspotenzial';
+    title = 'Solide Wasserqualität mit Optimierungspotenzial';
     text = 'Ihr Wasser ist vergleichsweise gut. Mit gezielten Massnahmen holen Sie noch mehr Komfort und Geräteschutz heraus.';
     ctaText = 'Kostenlose Detail-Analyse anfordern →';
   } else if (score >= 50) {
     color = getCss('--warn');
-    title = 'Spürbare Belastung – Handlungsbedarf empfohlen';
+    title = 'Spürbare Belastung, Handlungsbedarf empfohlen';
     text = 'Kalk und/oder weitere Faktoren belasten Ihr Wasser merklich. Eine passende Aufbereitung schützt Geräte und Geldbeutel.';
     ctaText = 'Jetzt kostenlose Analyse sichern →';
   } else {
     color = getCss('--bad');
-    title = 'Deutliche Belastung – wir empfehlen eine Analyse';
+    title = 'Deutliche Belastung, wir empfehlen eine Analyse';
     text = 'Mehrere Faktoren sprechen für eine erhöhte Belastung Ihres Wassers. Eine professionelle Messung vor Ort schafft Klarheit.';
     ctaText = 'Gratis-Analyse dringend empfohlen →';
   }
@@ -101,15 +101,15 @@ calcForm.addEventListener('submit', (e) => {
     msgField.value = `Mein Wasser-Score: ${score}/100 · Härte ca. ${hardness} °fH · geschätzte Folgekosten CHF ${cost}/Jahr · Region: ${regionLabel}.`;
   }
 
-  // --- Anzeige umschalten ---
-  calcForm.hidden = true;
+  // --- Anzeige umschalten (Formular bleibt sichtbar, Platzhalter -> Ergebnis) ---
+  document.getElementById('calcPlaceholder').hidden = true;
   calcResult.hidden = false;
-  calcResult.scrollIntoView({ behavior: 'smooth', block: 'center' });
 });
 
 calcReset.addEventListener('click', () => {
   calcResult.hidden = true;
-  calcForm.hidden = false;
+  document.getElementById('calcPlaceholder').hidden = false;
+  calcForm.reset();
   calcForm.scrollIntoView({ behavior: 'smooth', block: 'center' });
 });
 
