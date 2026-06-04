@@ -1,0 +1,19 @@
+[Unit]
+Description=Aquatum Lead Proxy (Brevo)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=www-data
+Group=www-data
+WorkingDirectory=/opt/aquatum-landingpage/server
+EnvironmentFile=/opt/aquatum-landingpage/.env
+ExecStart=/usr/bin/python3 /opt/aquatum-landingpage/server/leadproxy.py
+Restart=always
+RestartSec=3
+NoNewPrivileges=true
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target

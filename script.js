@@ -19,7 +19,7 @@
    (Erfolgsmeldung + lokale Speicherung), versendet aber nichts.
    ========================================================= */
 const CONFIG = {
-  BREVO_ENDPOINT: "", // <-- hier deine Brevo serve-URL einfügen
+  BREVO_ENDPOINT: "/api/lead", // server-seitiger Proxy (server/leadproxy.py) -> Brevo
   LOCALE: "de"
 };
 
