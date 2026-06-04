@@ -28,6 +28,7 @@ API_KEY = os.environ.get("BREVO_API_KEY", "")
 LIST_ID = int(os.environ.get("BREVO_LIST_ID", "0") or "0")
 SENDER_EMAIL = os.environ.get("BREVO_SENDER_EMAIL", "")
 SENDER_NAME = os.environ.get("BREVO_SENDER_NAME", "Aquatum")
+NOTIFY_EMAIL = os.environ.get("LEAD_NOTIFY_EMAIL", "")
 BREVO_API = "https://api.brevo.com/v3"
 EMAIL_RE = re.compile(r"^[^\s@]+@[^\s@]+\.[^\s@]+$")
 
@@ -110,6 +111,46 @@ def send_eval_mail(f):
     return brevo("POST", "/smtp/email", payload)
 
 
+def send_notify_mail(f):
+    """Interne Benachrichtigung an das Aquatum-/Leadhunter-Team bei jedem Lead."""
+    if not SENDER_EMAIL or not NOTIFY_EMAIL:
+        return None, "no notify recipient configured"
+    name = (f.get("FIRSTNAME", "") + " " + f.get("LASTNAME", "")).strip() or "—"
+    fields = [
+        ("Name", name),
+        ("E-Mail", f.get("EMAIL", "")),
+        ("Telefon", f.get("TELEFON", "")),
+        ("PLZ / Ort", f.get("PLZ_ORT", "")),
+        ("Region", f.get("REGION", "")),
+        ("Wasser-Score", f"{f.get('SCORE', '')}/100" if f.get("SCORE") else ""),
+        ("Wasserhärte", f"ca. {f.get('HAERTE', '')} °fH" if f.get("HAERTE") else ""),
+        ("Folgekosten", f"CHF {f.get('KOSTEN', '')}/Jahr" if f.get("KOSTEN") else ""),
+        ("Paket", f.get("PAKET", "")),
+        ("Opt-In", f.get("OPT_IN", "")),
+        ("Nachricht", f.get("NACHRICHT", "")),
+    ]
+    rows = "".join(
+        f'<tr><td style="padding:6px 12px 6px 0;color:#7488a0;white-space:nowrap;vertical-align:top">{label}</td>'
+        f'<td style="padding:6px 0;font-weight:600">{value}</td></tr>'
+        for label, value in fields if value
+    )
+    html = f"""<!DOCTYPE html><html lang="de"><body style="font-family:Arial,Helvetica,sans-serif;color:#1a2b3c;line-height:1.5;margin:0;padding:24px;background:#f4f8fb">
+<div style="max-width:560px;margin:0 auto;background:#fff;border-radius:12px;padding:28px">
+<h1 style="font-size:20px;margin:0 0 4px">Neuer Lead · Wasserfilter-Beratung</h1>
+<p style="margin:0 0 16px;color:#7488a0">{name} · Score {f.get('SCORE', '?')}/100</p>
+<table style="width:100%;border-collapse:collapse;font-size:14px">{rows}</table>
+<p style="font-size:12px;color:#7488a0;margin-top:20px">Automatische Benachrichtigung von wasserfilter-beratung.ch · Antwort geht direkt an den Lead.</p>
+</div></body></html>"""
+    payload = {
+        "sender": {"name": SENDER_NAME, "email": SENDER_EMAIL},
+        "to": [{"email": NOTIFY_EMAIL}],
+        "replyTo": {"email": f["EMAIL"], "name": name if name != "—" else f["EMAIL"]},
+        "subject": f"Neuer Lead · {name} · Score {f.get('SCORE', '?')}",
+        "htmlContent": html,
+    }
+    return brevo("POST", "/smtp/email", payload)
+
+
 class Handler(BaseHTTPRequestHandler):
     server_version = "aquatum-leadproxy"
 
@@ -157,6 +198,12 @@ class Handler(BaseHTTPRequestHandler):
         else:
             log(f"[lead] mail SKIP/FAIL {mstatus}: {str(mresp)[:200]}")
 
+        nstatus, nresp = send_notify_mail(f)
+        if nstatus in (200, 201):
+            log(f"[lead] notify OK <{NOTIFY_EMAIL}>")
+        elif nstatus is not None:
+            log(f"[lead] notify FAIL {nstatus}: {str(nresp)[:200]}")
+
         self._send(200, b'{"ok":true}')
 
     def log_message(self, *a):
@@ -167,7 +214,7 @@ def main():
     if not API_KEY:
         log("FATAL: BREVO_API_KEY fehlt"); sys.exit(1)
     httpd = ThreadingHTTPServer((HOST, PORT), Handler)
-    log(f"aquatum-leadproxy listening on {HOST}:{PORT} (list={LIST_ID}, sender={SENDER_EMAIL or 'none'})")
+    log(f"aquatum-leadproxy listening on {HOST}:{PORT} (list={LIST_ID}, sender={SENDER_EMAIL or 'none'}, notify={NOTIFY_EMAIL or 'none'})")
     httpd.serve_forever()
 
 
