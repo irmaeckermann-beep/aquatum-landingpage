@@ -4,7 +4,7 @@
  * Cookies gesetzt – die Seite verhaelt sich wie ohne Tracking. */
 (function () {
   // === Facebook-Pixel-ID hier eintragen (15–16 Ziffern). Leer = inaktiv. ===
-  var PIXEL_ID = "";
+  var PIXEL_ID = "1417157100131331";
 
   var settingsLinks = document.querySelectorAll(".js-cookie-settings");
 
