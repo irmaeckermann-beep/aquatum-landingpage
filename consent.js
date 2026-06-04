@@ -40,10 +40,25 @@
     window.fbq("track", "PageView");
   }
 
+  // Lead-Conversion (z. B. auf der Dankesseite). Feuert nur, wenn der Pixel
+  // bereits geladen (= Einwilligung erteilt) ist. Ansonsten wird der Lead
+  // vorgemerkt und nach einer spaeteren Einwilligung nachgeholt.
+  window.aquatumTrackLead = function () {
+    if (window.fbq && window._aqPixelLoaded) {
+      window.fbq("track", "Lead");
+    } else {
+      window._aqPendingLead = true;
+    }
+  };
+
   function grant() {
     try { localStorage.setItem(STORAGE_KEY, "granted"); } catch (e) {}
     removeBanner();
     loadPixel();
+    if (window._aqPendingLead) {
+      window._aqPendingLead = false;
+      window.fbq("track", "Lead");
+    }
   }
 
   function deny() {

@@ -183,8 +183,9 @@ signupForm.addEventListener('submit', async (e) => {
       });
       // no-cors liefert keine lesbare Antwort -> optimistisch als Erfolg werten
     }
-    formSuccess.hidden = false;
-    formSuccess.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    // Weiterleitung auf die Dankesseite (= Conversion-/Lead-Seite, loest dort den Lead-Event aus)
+    window.location.href = 'danke.html';
+    return;
   } catch (err) {
     showError('Es gab ein Problem bei der Anmeldung. Bitte versuchen Sie es erneut oder rufen Sie uns an: +41 61 851 00 89.');
     submitBtn.disabled = false;
