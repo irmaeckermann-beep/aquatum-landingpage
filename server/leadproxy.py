@@ -5,11 +5,13 @@ legt den Kontakt in Brevo an und schickt dem Lead seine Wasser-Auswertung.
 Der Brevo-API-Key bleibt server-seitig (EnvironmentFile), nie im Frontend.
 Laeuft hinter nginx (location /api/lead -> 127.0.0.1:PORT)."""
 
+import hashlib
 import json
 import os
 import re
 import socket
 import sys
+import time
 import urllib.error
 import urllib.parse
 import urllib.request
@@ -31,6 +33,14 @@ SENDER_NAME = os.environ.get("BREVO_SENDER_NAME", "Aquatum")
 NOTIFY_EMAIL = os.environ.get("LEAD_NOTIFY_EMAIL", "")
 BREVO_API = "https://api.brevo.com/v3"
 EMAIL_RE = re.compile(r"^[^\s@]+@[^\s@]+\.[^\s@]+$")
+
+# Facebook/Meta Conversions API (server-seitig). Token NUR aus EnvironmentFile,
+# nie im Repo/Frontend. Feuert ausschliesslich bei erteilter Einwilligung.
+META_PIXEL_ID = os.environ.get("META_PIXEL_ID", "")
+META_CAPI_TOKEN = os.environ.get("META_CAPI_TOKEN", "")
+META_GRAPH_VERSION = os.environ.get("META_GRAPH_VERSION", "v21.0")
+META_TEST_EVENT_CODE = os.environ.get("META_TEST_EVENT_CODE", "")
+GRAPH_API = "https://graph.facebook.com"
 
 TEXT_ATTRS = ["TELEFON", "PLZ_ORT", "NACHRICHT", "REGION", "PAKET", "OPT_IN"]
 NUM_ATTRS = ["SCORE", "HAERTE", "KOSTEN"]
@@ -55,6 +65,82 @@ def brevo(method, path, payload):
         return e.code, e.read().decode("utf-8", "replace")
     except Exception as e:  # noqa: BLE001
         return 0, str(e)
+
+
+def _hash(value):
+    """SHA-256 der normalisierten (lowercase, getrimmten) Angabe – Meta-Vorgabe."""
+    return hashlib.sha256((value or "").strip().lower().encode("utf-8")).hexdigest()
+
+
+def _norm_phone(value):
+    """Telefonnummer auf Ziffern reduzieren, Schweizer Vorwahl ergaenzen."""
+    digits = re.sub(r"\D", "", value or "")
+    if not digits:
+        return ""
+    if digits.startswith("00"):
+        digits = digits[2:]
+    elif digits.startswith("0"):
+        digits = "41" + digits[1:]
+    return digits
+
+
+def graph_post(path, payload):
+    req = urllib.request.Request(
+        GRAPH_API + path,
+        data=json.dumps(payload).encode("utf-8"),
+        method="POST",
+        headers={"content-type": "application/json"},
+    )
+    try:
+        with urllib.request.urlopen(req, timeout=15) as r:
+            return r.status, r.read().decode("utf-8", "replace")
+    except urllib.error.HTTPError as e:
+        return e.code, e.read().decode("utf-8", "replace")
+    except Exception as e:  # noqa: BLE001
+        return 0, str(e)
+
+
+def send_capi_lead(f, client_ip, client_ua):
+    """Server-seitiges 'Lead'-Event an die Meta Conversions API.
+    Nur bei erteilter Pixel-Einwilligung (FB_CONSENT=1) und konfiguriertem Token.
+    event_id ist identisch zum Browser-Pixel-Event -> Meta dedupliziert."""
+    if not META_PIXEL_ID or not META_CAPI_TOKEN:
+        return None, "capi not configured"
+    if f.get("FB_CONSENT", "") != "1":
+        return None, "no consent"
+    user_data = {}
+    if f.get("EMAIL"):
+        user_data["em"] = [_hash(f["EMAIL"])]
+    ph = _norm_phone(f.get("TELEFON", ""))
+    if ph:
+        user_data["ph"] = [_hash(ph)]
+    if f.get("FIRSTNAME"):
+        user_data["fn"] = [_hash(f["FIRSTNAME"])]
+    if f.get("LASTNAME"):
+        user_data["ln"] = [_hash(f["LASTNAME"])]
+    # fbp/fbc werden UNGEHASHT uebermittelt (Meta-Vorgabe)
+    if f.get("FBP"):
+        user_data["fbp"] = f["FBP"]
+    if f.get("FBC"):
+        user_data["fbc"] = f["FBC"]
+    if client_ip:
+        user_data["client_ip_address"] = client_ip
+    if client_ua:
+        user_data["client_user_agent"] = client_ua
+    event = {
+        "event_name": "Lead",
+        "event_time": int(time.time()),
+        "action_source": "website",
+        "user_data": user_data,
+    }
+    if f.get("EVENT_ID"):
+        event["event_id"] = f["EVENT_ID"]
+    if f.get("EVENT_SOURCE_URL"):
+        event["event_source_url"] = f["EVENT_SOURCE_URL"]
+    payload = {"data": [event], "access_token": META_CAPI_TOKEN}
+    if META_TEST_EVENT_CODE:
+        payload["test_event_code"] = META_TEST_EVENT_CODE
+    return graph_post(f"/{META_GRAPH_VERSION}/{META_PIXEL_ID}/events", payload)
 
 
 def upsert_contact(f):
@@ -204,6 +290,18 @@ class Handler(BaseHTTPRequestHandler):
         elif nstatus is not None:
             log(f"[lead] notify FAIL {nstatus}: {str(nresp)[:200]}")
 
+        # Server-seitiges Lead-Event an Meta (nur bei Einwilligung)
+        xff = self.headers.get("X-Forwarded-For", "")
+        client_ip = xff.split(",")[0].strip() if xff else self.client_address[0]
+        client_ua = self.headers.get("User-Agent", "")
+        cstatus, cresp = send_capi_lead(f, client_ip, client_ua)
+        if cstatus in (200, 201):
+            log(f"[lead] capi OK <{email}> eid={f.get('EVENT_ID','')}")
+        elif cstatus is not None:
+            log(f"[lead] capi FAIL {cstatus}: {str(cresp)[:200]}")
+        else:
+            log(f"[lead] capi SKIP ({cresp})")
+
         self._send(200, b'{"ok":true}')
 
     def log_message(self, *a):
@@ -214,7 +312,7 @@ def main():
     if not API_KEY:
         log("FATAL: BREVO_API_KEY fehlt"); sys.exit(1)
     httpd = ThreadingHTTPServer((HOST, PORT), Handler)
-    log(f"aquatum-leadproxy listening on {HOST}:{PORT} (list={LIST_ID}, sender={SENDER_EMAIL or 'none'}, notify={NOTIFY_EMAIL or 'none'})")
+    log(f"aquatum-leadproxy listening on {HOST}:{PORT} (list={LIST_ID}, sender={SENDER_EMAIL or 'none'}, notify={NOTIFY_EMAIL or 'none'}, capi={'on:' + META_PIXEL_ID if (META_PIXEL_ID and META_CAPI_TOKEN) else 'off'})")
     httpd.serve_forever()
 
 

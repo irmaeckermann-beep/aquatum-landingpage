@@ -167,6 +167,27 @@ signupForm.addEventListener('submit', async (e) => {
   new FormData(signupForm).forEach((value, key) => data.append(key, value));
   data.append('locale', CONFIG.LOCALE);
 
+  // Facebook-Conversions-API: gemeinsame Event-ID (Dedup mit Browser-Pixel)
+  // + Einwilligungs-Status + Cookies. Ohne Einwilligung sendet der Server
+  // KEIN Lead-Event (FB_CONSENT wird dann nicht gesetzt).
+  const leadEventId = (self.crypto && crypto.randomUUID)
+    ? crypto.randomUUID()
+    : 'aq-' + Date.now() + '-' + Math.random().toString(16).slice(2);
+  try { sessionStorage.setItem('aq_lead_event_id', leadEventId); } catch (e) {}
+  data.append('EVENT_ID', leadEventId);
+  data.append('EVENT_SOURCE_URL', location.href);
+  let fbConsent = null;
+  try { fbConsent = localStorage.getItem('aquatum_consent_v1'); } catch (e) {}
+  if (fbConsent === 'granted') data.append('FB_CONSENT', '1');
+  const getCookie = (n) => {
+    const m = document.cookie.match('(^|;)\\s*' + n + '\\s*=\\s*([^;]+)');
+    return m ? m.pop() : '';
+  };
+  const fbp = getCookie('_fbp');
+  const fbc = getCookie('_fbc');
+  if (fbp) data.append('FBP', fbp);
+  if (fbc) data.append('FBC', fbc);
+
   // Lokales Backup (geht nie verloren, exportierbar via exportLeads())
   saveLeadLocally(Object.fromEntries(data));
 

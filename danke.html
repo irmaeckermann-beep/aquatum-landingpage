@@ -73,8 +73,13 @@
   <script>
     /* Lead-Conversion auf der Dankesseite ausloesen.
      * Feuert NUR, wenn der Facebook-Pixel aktiv ist (Pixel-ID gesetzt) UND
-     * der Besucher eingewilligt hat. Ohne Einwilligung passiert nichts. */
-    if (window.aquatumTrackLead) window.aquatumTrackLead();
+     * der Besucher eingewilligt hat. Die Event-ID stammt aus dem Formular-
+     * Submit, damit Meta dieses Browser-Event mit dem Server-Event (CAPI)
+     * dedupliziert. Ohne Einwilligung passiert nichts. */
+    var _aqLeadEid = null;
+    try { _aqLeadEid = sessionStorage.getItem('aq_lead_event_id'); } catch (e) {}
+    if (window.aquatumTrackLead) window.aquatumTrackLead(_aqLeadEid);
+    try { sessionStorage.removeItem('aq_lead_event_id'); } catch (e) {}
   </script>
 </body>
 </html>

@@ -43,11 +43,17 @@
   // Lead-Conversion (z. B. auf der Dankesseite). Feuert nur, wenn der Pixel
   // bereits geladen (= Einwilligung erteilt) ist. Ansonsten wird der Lead
   // vorgemerkt und nach einer spaeteren Einwilligung nachgeholt.
-  window.aquatumTrackLead = function () {
+  function fireLead(eventId) {
+    if (eventId) window.fbq("track", "Lead", {}, { eventID: eventId });
+    else window.fbq("track", "Lead");
+  }
+
+  window.aquatumTrackLead = function (eventId) {
     if (window.fbq && window._aqPixelLoaded) {
-      window.fbq("track", "Lead");
+      fireLead(eventId);
     } else {
-      window._aqPendingLead = true;
+      // Lead vormerken (eventId erhalten), bis eingewilligt wird
+      window._aqPendingLead = eventId || true;
     }
   };
 
@@ -56,8 +62,9 @@
     removeBanner();
     loadPixel();
     if (window._aqPendingLead) {
+      var pid = window._aqPendingLead;
       window._aqPendingLead = false;
-      window.fbq("track", "Lead");
+      fireLead(pid === true ? null : pid);
     }
   }
 
