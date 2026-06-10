@@ -41,7 +41,6 @@
         </p>
         <div class="hero-cta">
           <a href="#rechner" class="btn btn-primary">Wasser-Score in 60 Sekunden aufdecken</a>
-          <a href="#anmeldung" class="btn btn-ghost">Kostenlose Beratung anfordern</a>
         </div>
         <ul class="hero-trust">
           <li>✓ Für Mietwohnung &amp; Eigenheim</li>
@@ -49,15 +48,23 @@
           <li>✓ Über 2'000 zufriedene Haushalte</li>
         </ul>
       </div>
-      <div class="hero-card">
-        <div class="hero-photo">
-          <img src="assets/hero-wasser.jpg" alt="Klares, gefiltertes Trinkwasser fliesst in ein Glas" />
-          <div class="hero-photo-badge">
-            <div class="water-glass"><div class="water-level"></div></div>
-          </div>
-        </div>
-        <p class="hero-card-stat"><strong>1 von 3</strong> Schweizer Haushalten lebt mit sehr hartem Wasser, und die meisten ahnen es nicht einmal.*</p>
-        <small>* Quelle: Branchenangaben Wasserhärte CH</small>
+      <div class="hero-card hero-form-card">
+        <h3 class="hero-form-title">Gratis-Beratung anfordern</h3>
+        <p class="hero-form-sub">Unverbindlich &amp; kostenlos. Wir melden uns zeitnah bei Ihnen.</p>
+        <form id="heroForm" novalidate>
+          <input type="text" id="hfFirst" name="FIRSTNAME" placeholder="Vorname *" autocomplete="given-name" required />
+          <input type="email" id="hfEmail" name="EMAIL" placeholder="E-Mail *" autocomplete="email" required />
+          <input type="tel" id="hfPhone" name="TELEFON" placeholder="Telefon (für schnellen Rückruf)" autocomplete="tel" />
+          <input type="hidden" name="PRODUKT" value="Aquatum Wasserfilter (Schnellanfrage)" />
+          <input type="text" name="email_address_check" value="" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;" />
+          <label class="hero-consent">
+            <input type="checkbox" id="hfConsent" name="OPT_IN" value="1" required />
+            <span>Ich bin einverstanden, dass Aquatum AG mich kontaktiert. Es gilt die <a href="datenschutz.html" target="_blank" rel="noopener">Datenschutzerklärung</a>.</span>
+          </label>
+          <button type="submit" class="btn btn-primary btn-full" id="heroSubmit">Gratis-Beratung anfordern</button>
+          <p class="form-error" id="heroError" hidden></p>
+        </form>
+        <p class="hero-form-foot">Unsicher? <a href="#rechner">Erst den Wasser-Check machen →</a></p>
       </div>
     </div>
   </section>

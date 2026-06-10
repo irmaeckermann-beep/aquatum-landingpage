@@ -129,6 +129,22 @@ em { font-style: normal; color: var(--blue-500); }
   background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.2);
   border-radius: 20px; padding: 30px; text-align: center; backdrop-filter: blur(6px);
 }
+/* Hero-Kurzformular (Direkt-Kontakt) */
+.hero-form-card { background: #fff; text-align: left; padding: 26px 24px; }
+.hero-form-title { color: var(--blue-900); font-size: 1.35rem; }
+.hero-form-sub { color: var(--muted); font-size: .92rem; margin: 6px 0 16px; }
+.hero-form-card form { display: grid; gap: 10px; }
+.hero-form-card input[type="text"],
+.hero-form-card input[type="email"],
+.hero-form-card input[type="tel"] {
+  width: 100%; padding: 12px 14px; border: 1px solid var(--line);
+  border-radius: 10px; font: inherit; color: var(--ink);
+}
+.hero-form-card input:focus { outline: none; border-color: var(--teal); box-shadow: 0 0 0 3px rgba(38,185,209,.18); }
+.hero-consent { display: flex; gap: 8px; align-items: flex-start; font-size: .8rem; color: var(--muted); line-height: 1.4; }
+.hero-consent input { margin-top: 3px; flex: none; }
+.hero-form-card .form-error { color: var(--bad); font-size: .85rem; margin: 0; }
+.hero-form-foot { margin-top: 14px; font-size: .9rem; color: var(--muted); text-align: center; }
 .hero-card-stat { font-size: 1.05rem; color: #eaf4fd; margin-top: 18px; }
 .hero-card-stat strong { display: block; font-size: 2rem; color: var(--teal); font-weight: 800; }
 .hero-card small { color: #9cc2dd; font-size: .72rem; }

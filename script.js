@@ -219,6 +219,73 @@ function showError(text) {
   formError.hidden = false;
 }
 
+// ---------- Hero-Kurzformular (Direkt-Kontakt, isoliert vom Hauptformular) ----------
+const heroForm = document.getElementById('heroForm');
+if (heroForm) {
+  const heroSubmit = document.getElementById('heroSubmit');
+  const heroError = document.getElementById('heroError');
+  const showHeroError = (t) => { heroError.textContent = t; heroError.hidden = false; };
+
+  heroForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    heroError.hidden = true;
+
+    // Honeypot
+    if (heroForm.querySelector('[name="email_address_check"]').value) return;
+
+    const name = document.getElementById('hfFirst').value.trim();
+    const email = document.getElementById('hfEmail').value.trim();
+    if (!name || !document.getElementById('hfConsent').checked) {
+      showHeroError('Bitte Vorname eingeben und den Datenschutz bestätigen.');
+      return;
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      showHeroError('Bitte geben Sie eine gültige E-Mail-Adresse ein.');
+      document.getElementById('hfEmail').focus();
+      return;
+    }
+
+    const data = new URLSearchParams();
+    new FormData(heroForm).forEach((value, key) => data.append(key, value));
+    data.append('locale', CONFIG.LOCALE);
+
+    // Facebook-Conversions-API: gleiche Event-ID-Logik wie das Hauptformular
+    const eid = (self.crypto && crypto.randomUUID)
+      ? crypto.randomUUID()
+      : 'aq-' + Date.now() + '-' + Math.random().toString(16).slice(2);
+    try { sessionStorage.setItem('aq_lead_event_id', eid); } catch (e) {}
+    data.append('EVENT_ID', eid);
+    data.append('EVENT_SOURCE_URL', location.href);
+    let fbConsent = null;
+    try { fbConsent = localStorage.getItem('aquatum_consent_v1'); } catch (e) {}
+    if (fbConsent === 'granted') data.append('FB_CONSENT', '1');
+    const getCk = (n) => { const m = document.cookie.match('(^|;)\\s*' + n + '\\s*=\\s*([^;]+)'); return m ? m.pop() : ''; };
+    const fbp = getCk('_fbp'), fbc = getCk('_fbc');
+    if (fbp) data.append('FBP', fbp);
+    if (fbc) data.append('FBC', fbc);
+
+    saveLeadLocally(Object.fromEntries(data));
+    heroSubmit.disabled = true;
+    heroSubmit.textContent = 'Wird gesendet…';
+
+    try {
+      if (CONFIG.BREVO_ENDPOINT) {
+        await fetch(CONFIG.BREVO_ENDPOINT, {
+          method: 'POST', mode: 'no-cors',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: data.toString()
+        });
+      }
+      window.location.href = 'danke.html';
+      return;
+    } catch (err) {
+      showHeroError('Es gab ein Problem. Bitte rufen Sie uns an: +41 61 851 00 89.');
+      heroSubmit.disabled = false;
+      heroSubmit.textContent = 'Gratis-Beratung anfordern';
+    }
+  });
+}
+
 // Lokales Lead-Backup (Fallback / Test)
 function saveLeadLocally(obj) {
   try {
