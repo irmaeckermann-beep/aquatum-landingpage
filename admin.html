@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Lead-Backend · Regenfänger</title>
+  <style>
+    :root{
+      --blue-900:#0a2540; --blue-700:#0e4d8c; --teal:#26b9d1; --orange:#ec660b;
+      --ink:#16222e; --muted:#5a6b78; --line:#e2ebf2; --cyan-50:#eef7fc; --bad:#e2563b;
+    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:'Inter',system-ui,-apple-system,Segoe UI,Roboto,sans-serif;color:var(--ink);background:var(--cyan-50);line-height:1.5}
+    a{color:var(--blue-700)}
+    .topbar{position:sticky;top:0;z-index:10;background:#fff;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:16px;padding:12px 20px;flex-wrap:wrap}
+    .topbar img{height:34px;width:auto;display:block}
+    .topbar h1{font-size:1.05rem;font-weight:700;color:var(--blue-900)}
+    .topbar .count{background:var(--cyan-50);color:var(--blue-700);font-weight:700;font-size:.85rem;padding:4px 12px;border-radius:999px;border:1px solid var(--line)}
+    .topbar .spacer{flex:1}
+    .btn{font:inherit;font-weight:600;font-size:.9rem;padding:9px 16px;border-radius:9px;border:1px solid var(--line);background:#fff;color:var(--ink);cursor:pointer;transition:.15s}
+    .btn:hover{background:var(--cyan-50)}
+    .btn-primary{background:linear-gradient(135deg,var(--blue-700),var(--teal));color:#fff;border:none}
+    .btn-primary:hover{opacity:.92}
+    .btn-orange{background:var(--orange);color:#fff;border:none}
+    .wrap{max-width:1280px;margin:0 auto;padding:20px}
+    /* Login */
+    .login{min-height:100vh;display:grid;place-items:center;padding:24px}
+    .login-card{background:#fff;border:1px solid var(--line);border-radius:16px;box-shadow:0 18px 40px -22px rgba(10,37,64,.35);padding:36px 32px;width:100%;max-width:380px;text-align:center}
+    .login-card img{height:42px;margin-bottom:22px}
+    .login-card h2{font-size:1.25rem;color:var(--blue-900);margin-bottom:6px}
+    .login-card p{color:var(--muted);font-size:.9rem;margin-bottom:22px}
+    .login-card input{width:100%;padding:12px 14px;border:1px solid var(--line);border-radius:9px;font:inherit;margin-bottom:14px}
+    .login-card input:focus{outline:none;border-color:var(--teal)}
+    .login-card .btn-primary{width:100%;padding:12px}
+    .err{color:var(--bad);font-size:.88rem;margin-bottom:12px;min-height:1.1em}
+    /* Tools */
+    .tools{display:flex;gap:12px;align-items:center;margin-bottom:16px;flex-wrap:wrap}
+    .tools input[type=search]{flex:1;min-width:220px;padding:10px 14px;border:1px solid var(--line);border-radius:9px;font:inherit;background:#fff}
+    .tools input[type=search]:focus{outline:none;border-color:var(--teal)}
+    /* Table */
+    .table-card{background:#fff;border:1px solid var(--line);border-radius:14px;overflow:auto;box-shadow:0 14px 34px -26px rgba(10,37,64,.4)}
+    table{width:100%;border-collapse:collapse;font-size:.88rem;white-space:nowrap}
+    thead th{position:sticky;top:0;background:var(--blue-900);color:#fff;text-align:left;font-weight:600;padding:11px 14px;font-size:.78rem;letter-spacing:.02em;text-transform:uppercase}
+    tbody td{padding:10px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+    tbody tr:hover{background:var(--cyan-50)}
+    td.msg{white-space:normal;max-width:280px;color:var(--muted)}
+    td.score b{display:inline-block;min-width:34px;text-align:center;padding:2px 8px;border-radius:6px;background:var(--cyan-50);color:var(--blue-700);font-weight:700}
+    .empty{text-align:center;color:var(--muted);padding:48px 20px}
+    .muted{color:var(--muted)}
+    .hidden{display:none}
+    @media(max-width:640px){.topbar h1{display:none}}
+  </style>
+</head>
+<body>
+
+  <!-- ===== LOGIN ===== -->
+  <div class="login" id="loginView">
+    <form class="login-card" id="loginForm">
+      <img src="assets/logo-regenfaenger.svg" alt="Regenfänger" onerror="this.style.display='none'" />
+      <h2>Lead-Backend</h2>
+      <p>Bitte mit dem Admin-Passwort anmelden.</p>
+      <p class="err" id="loginErr"></p>
+      <input type="password" id="token" placeholder="Admin-Passwort" autocomplete="current-password" required />
+      <button type="submit" class="btn btn-primary" id="loginBtn">Anmelden</button>
+    </form>
+  </div>
+
+  <!-- ===== DASHBOARD ===== -->
+  <div id="appView" class="hidden">
+    <div class="topbar">
+      <img src="assets/logo-regenfaenger.svg" alt="Regenfänger" onerror="this.style.display='none'" />
+      <h1>Lead-Backend</h1>
+      <span class="count" id="count">0 Leads</span>
+      <span class="spacer"></span>
+      <button class="btn" id="reloadBtn">Aktualisieren</button>
+      <button class="btn btn-orange" id="csvBtn">CSV-Export</button>
+      <button class="btn" id="logoutBtn">Abmelden</button>
+    </div>
+    <div class="wrap">
+      <div class="tools">
+        <input type="search" id="search" placeholder="Suchen: Name, E-Mail, Ort, Region, Paket…" />
+        <span class="muted" id="filterInfo"></span>
+      </div>
+      <div class="table-card">
+        <table>
+          <thead>
+            <tr>
+              <th>Datum</th><th>Name</th><th>E-Mail</th><th>Telefon</th>
+              <th>PLZ / Ort</th><th>Region</th><th>Score</th><th>Härte</th>
+              <th>Kosten/Jahr</th><th>Paket</th><th>Nachricht</th>
+            </tr>
+          </thead>
+          <tbody id="rows"></tbody>
+        </table>
+        <div class="empty hidden" id="empty">Noch keine Leads vorhanden.</div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Endpoint des Lead-Proxys. Standard: gleiche Domain wie diese Seite
+    // (d.h. admin.html muss auf der Live-Domain geoeffnet werden, wo /api laeuft).
+    var API = '/api/leads';
+    var KEY = 'rf_admin_token';
+    var leads = [];
+
+    var loginView = document.getElementById('loginView');
+    var appView   = document.getElementById('appView');
+    var loginForm = document.getElementById('loginForm');
+    var loginErr  = document.getElementById('loginErr');
+    var loginBtn  = document.getElementById('loginBtn');
+
+    function getToken(){ try{ return sessionStorage.getItem(KEY) || ''; }catch(e){ return ''; } }
+    function setToken(t){ try{ sessionStorage.setItem(KEY, t); }catch(e){} }
+    function clearToken(){ try{ sessionStorage.removeItem(KEY); }catch(e){} }
+
+    async function fetchLeads(token){
+      var res = await fetch(API, { headers: { 'Authorization': 'Bearer ' + token } });
+      if (res.status === 401) { var e = new Error('unauthorized'); e.code = 401; throw e; }
+      if (!res.ok) throw new Error('http_' + res.status);
+      var data = await res.json();
+      return data.leads || [];
+    }
+
+    function showApp(){ loginView.classList.add('hidden'); appView.classList.remove('hidden'); }
+    function showLogin(){ appView.classList.add('hidden'); loginView.classList.remove('hidden'); }
+
+    loginForm.addEventListener('submit', async function(e){
+      e.preventDefault();
+      loginErr.textContent = '';
+      var token = document.getElementById('token').value.trim();
+      if (!token) return;
+      loginBtn.disabled = true; loginBtn.textContent = 'Prüfe…';
+      try {
+        leads = await fetchLeads(token);
+        setToken(token);
+        showApp();
+        render();
+      } catch (err) {
+        loginErr.textContent = (err.code === 401)
+          ? 'Falsches Passwort.'
+          : 'Verbindung fehlgeschlagen. Läuft das Backend auf dieser Domain?';
+      } finally {
+        loginBtn.disabled = false; loginBtn.textContent = 'Anmelden';
+      }
+    });
+
+    async function reload(){
+      var token = getToken();
+      if (!token) return showLogin();
+      try {
+        leads = await fetchLeads(token);
+        render();
+      } catch (err) {
+        if (err.code === 401) { clearToken(); showLogin(); }
+        else alert('Aktualisieren fehlgeschlagen.');
+      }
+    }
+
+    function esc(s){ return String(s == null ? '' : s).replace(/[&<>"]/g, function(c){
+      return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'})[c]; }); }
+
+    function fmtDate(ts){
+      if (!ts) return '';
+      var d = new Date(ts);
+      if (isNaN(d)) return ts;
+      return d.toLocaleString('de-CH', { day:'2-digit', month:'2-digit', year:'numeric', hour:'2-digit', minute:'2-digit' });
+    }
+
+    function currentList(){
+      var q = document.getElementById('search').value.trim().toLowerCase();
+      if (!q) return leads;
+      return leads.filter(function(l){
+        return [l.vorname,l.nachname,l.email,l.telefon,l.plz_ort,l.region,l.paket,l.nachricht]
+          .join(' ').toLowerCase().indexOf(q) !== -1;
+      });
+    }
+
+    function render(){
+      var list = currentList();
+      document.getElementById('count').textContent = leads.length + (leads.length === 1 ? ' Lead' : ' Leads');
+      var fi = document.getElementById('filterInfo');
+      fi.textContent = (list.length !== leads.length) ? (list.length + ' gefiltert') : '';
+      var rows = document.getElementById('rows');
+      var empty = document.getElementById('empty');
+      if (!list.length){ rows.innerHTML = ''; empty.classList.remove('hidden');
+        empty.textContent = leads.length ? 'Keine Treffer für die Suche.' : 'Noch keine Leads vorhanden.'; return; }
+      empty.classList.add('hidden');
+      rows.innerHTML = list.map(function(l){
+        var name = (esc(l.vorname) + ' ' + esc(l.nachname)).trim() || '—';
+        var score = l.score ? '<span class="score"><b>' + esc(l.score) + '</b></span>' : '';
+        return '<tr>'
+          + '<td>' + esc(fmtDate(l.ts)) + '</td>'
+          + '<td>' + name + '</td>'
+          + '<td><a href="mailto:' + esc(l.email) + '">' + esc(l.email) + '</a></td>'
+          + '<td>' + (l.telefon ? '<a href="tel:' + esc(l.telefon) + '">' + esc(l.telefon) + '</a>' : '') + '</td>'
+          + '<td>' + esc(l.plz_ort) + '</td>'
+          + '<td>' + esc(l.region) + '</td>'
+          + '<td class="score">' + score + '</td>'
+          + '<td>' + (l.haerte ? esc(l.haerte) + ' °fH' : '') + '</td>'
+          + '<td>' + (l.kosten ? 'CHF ' + esc(l.kosten) : '') + '</td>'
+          + '<td>' + esc(l.paket) + '</td>'
+          + '<td class="msg">' + esc(l.nachricht) + '</td>'
+          + '</tr>';
+      }).join('');
+    }
+
+    function toCSV(list){
+      var cols = ['ts','vorname','nachname','email','telefon','plz_ort','region','score','haerte','kosten','paket','nachricht','opt_in','ip'];
+      var head = ['Datum','Vorname','Nachname','E-Mail','Telefon','PLZ/Ort','Region','Score','Haerte','Kosten','Paket','Nachricht','Opt-In','IP'];
+      function cell(v){ v = (v == null ? '' : String(v)); return '"' + v.replace(/"/g,'""') + '"'; }
+      var lines = [head.map(cell).join(';')];
+      list.forEach(function(l){ lines.push(cols.map(function(c){ return cell(l[c]); }).join(';')); });
+      return '﻿' + lines.join('\r\n'); // BOM fuer Excel/Umlaute
+    }
+
+    document.getElementById('reloadBtn').addEventListener('click', reload);
+    document.getElementById('logoutBtn').addEventListener('click', function(){ clearToken(); document.getElementById('token').value=''; showLogin(); });
+    document.getElementById('search').addEventListener('input', render);
+    document.getElementById('csvBtn').addEventListener('click', function(){
+      var csv = toCSV(currentList());
+      var url = URL.createObjectURL(new Blob([csv], { type:'text/csv;charset=utf-8' }));
+      var a = document.createElement('a');
+      a.href = url; a.download = 'regenfaenger-leads.csv'; a.click();
+      setTimeout(function(){ URL.revokeObjectURL(url); }, 1000);
+    });
+
+    // Auto-Login, falls Token noch in der Session liegt
+    (function init(){
+      var token = getToken();
+      if (!token) return;
+      fetchLeads(token).then(function(l){ leads = l; showApp(); render(); })
+        .catch(function(err){ if (err.code === 401) clearToken(); showLogin(); });
+    })();
+  </script>
+</body>
+</html>

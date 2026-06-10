@@ -6,11 +6,13 @@ Der Brevo-API-Key bleibt server-seitig (EnvironmentFile), nie im Frontend.
 Laeuft hinter nginx (location /api/lead -> 127.0.0.1:PORT)."""
 
 import hashlib
+import hmac
 import json
 import os
 import re
 import socket
 import sys
+import threading
 import time
 import urllib.error
 import urllib.parse
@@ -45,9 +47,72 @@ GRAPH_API = "https://graph.facebook.com"
 TEXT_ATTRS = ["TELEFON", "PLZ_ORT", "NACHRICHT", "REGION", "PAKET", "OPT_IN"]
 NUM_ATTRS = ["SCORE", "HAERTE", "KOSTEN"]
 
+# Lead-Backend: jeder Lead wird zusaetzlich lokal als JSON-Zeile gespeichert,
+# damit das Team die Leads im geschuetzten Admin-Bereich (/api/leads) ansehen kann.
+# Datei MUSS ausserhalb des Web-Roots liegen (sonst oeffentlich abrufbar!).
+LEADS_FILE = os.environ.get("LEADS_FILE", "/var/lib/aquatum-leadproxy/leads.jsonl")
+# Passwort/Token fuer den Admin-Zugriff auf /api/leads. Leer = Endpoint deaktiviert.
+ADMIN_TOKEN = os.environ.get("ADMIN_TOKEN", "")
+_leads_lock = threading.Lock()
+
 
 def log(*a):
     print(*a, file=sys.stderr, flush=True)
+
+
+def store_lead(f, client_ip):
+    """Haengt den Lead als JSON-Zeile an LEADS_FILE an (Quelle fuer das Admin-Backend)."""
+    if not LEADS_FILE:
+        return
+    rec = {
+        "ts": time.strftime("%Y-%m-%dT%H:%M:%S%z"),
+        "vorname": f.get("FIRSTNAME", ""),
+        "nachname": f.get("LASTNAME", ""),
+        "email": f.get("EMAIL", ""),
+        "telefon": f.get("TELEFON", ""),
+        "plz_ort": f.get("PLZ_ORT", ""),
+        "region": f.get("REGION", ""),
+        "score": f.get("SCORE", ""),
+        "haerte": f.get("HAERTE", ""),
+        "kosten": f.get("KOSTEN", ""),
+        "paket": f.get("PAKET", ""),
+        "nachricht": f.get("NACHRICHT", ""),
+        "opt_in": f.get("OPT_IN", ""),
+        "ip": client_ip,
+    }
+    try:
+        with _leads_lock:
+            d = os.path.dirname(LEADS_FILE)
+            if d:
+                os.makedirs(d, exist_ok=True)
+            with open(LEADS_FILE, "a", encoding="utf-8") as fh:
+                fh.write(json.dumps(rec, ensure_ascii=False) + "\n")
+    except Exception as e:  # noqa: BLE001
+        log(f"[lead] store FAIL: {e}")
+
+
+def read_leads(limit=10000):
+    """Liest gespeicherte Leads (neueste zuerst)."""
+    try:
+        with _leads_lock:
+            with open(LEADS_FILE, "r", encoding="utf-8") as fh:
+                lines = fh.readlines()
+    except FileNotFoundError:
+        return []
+    except Exception as e:  # noqa: BLE001
+        log(f"[lead] read FAIL: {e}")
+        return []
+    out = []
+    for line in lines[-limit:]:
+        line = line.strip()
+        if not line:
+            continue
+        try:
+            out.append(json.loads(line))
+        except Exception:  # noqa: BLE001
+            pass
+    out.reverse()
+    return out
 
 
 def brevo(method, path, payload):
@@ -244,8 +309,8 @@ class Handler(BaseHTTPRequestHandler):
         self.send_response(code)
         self.send_header("Content-Type", ctype)
         self.send_header("Access-Control-Allow-Origin", "*")
-        self.send_header("Access-Control-Allow-Methods", "POST, OPTIONS")
-        self.send_header("Access-Control-Allow-Headers", "Content-Type")
+        self.send_header("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
+        self.send_header("Access-Control-Allow-Headers", "Content-Type, Authorization")
         self.send_header("Content-Length", str(len(body)))
         self.end_headers()
         if body:
@@ -254,7 +319,28 @@ class Handler(BaseHTTPRequestHandler):
     def do_OPTIONS(self):
         self._send(204)
 
+    def _check_admin(self):
+        """True, wenn ein gueltiges Bearer-Token im Authorization-Header steht."""
+        if not ADMIN_TOKEN:
+            return False
+        auth = self.headers.get("Authorization", "")
+        if not auth.startswith("Bearer "):
+            return False
+        token = auth[7:].strip()
+        return bool(token) and hmac.compare_digest(token, ADMIN_TOKEN)
+
     def do_GET(self):
+        path = urllib.parse.urlparse(self.path).path
+        if path == "/api/leads":
+            if not self._check_admin():
+                time.sleep(1)  # Brute-Force ausbremsen
+                return self._send(401, b'{"ok":false,"error":"unauthorized"}')
+            leads = read_leads()
+            body = json.dumps(
+                {"ok": True, "count": len(leads), "leads": leads},
+                ensure_ascii=False,
+            ).encode("utf-8")
+            return self._send(200, body)
         # Health check
         self._send(200, b'{"ok":true,"service":"aquatum-leadproxy"}')
 
@@ -271,6 +357,15 @@ class Handler(BaseHTTPRequestHandler):
         if not email or not EMAIL_RE.match(email):
             return self._send(400, b'{"ok":false,"error":"invalid_email"}')
         f["EMAIL"] = email
+
+        # Client-IP (hinter nginx via X-Forwarded-For) bestimmen
+        xff = self.headers.get("X-Forwarded-For", "")
+        client_ip = xff.split(",")[0].strip() if xff else self.client_address[0]
+        client_ua = self.headers.get("User-Agent", "")
+
+        # Lead sofort lokal sichern (Quelle fuer das Admin-Backend) -- auch wenn
+        # Brevo gleich darauf einmal haengt, geht der Lead so nie verloren.
+        store_lead(f, client_ip)
 
         status, resp = upsert_contact(f)
         if status not in (200, 201, 204):
@@ -291,9 +386,6 @@ class Handler(BaseHTTPRequestHandler):
             log(f"[lead] notify FAIL {nstatus}: {str(nresp)[:200]}")
 
         # Server-seitiges Lead-Event an Meta (nur bei Einwilligung)
-        xff = self.headers.get("X-Forwarded-For", "")
-        client_ip = xff.split(",")[0].strip() if xff else self.client_address[0]
-        client_ua = self.headers.get("User-Agent", "")
         cstatus, cresp = send_capi_lead(f, client_ip, client_ua)
         if cstatus in (200, 201):
             log(f"[lead] capi OK <{email}> eid={f.get('EVENT_ID','')}")
@@ -312,7 +404,7 @@ def main():
     if not API_KEY:
         log("FATAL: BREVO_API_KEY fehlt"); sys.exit(1)
     httpd = ThreadingHTTPServer((HOST, PORT), Handler)
-    log(f"aquatum-leadproxy listening on {HOST}:{PORT} (list={LIST_ID}, sender={SENDER_EMAIL or 'none'}, notify={NOTIFY_EMAIL or 'none'}, capi={'on:' + META_PIXEL_ID if (META_PIXEL_ID and META_CAPI_TOKEN) else 'off'})")
+    log(f"aquatum-leadproxy listening on {HOST}:{PORT} (list={LIST_ID}, sender={SENDER_EMAIL or 'none'}, notify={NOTIFY_EMAIL or 'none'}, capi={'on:' + META_PIXEL_ID if (META_PIXEL_ID and META_CAPI_TOKEN) else 'off'}, leads_file={LEADS_FILE or 'off'}, admin={'on' if ADMIN_TOKEN else 'OFF (ADMIN_TOKEN fehlt)'})")
     httpd.serve_forever()
 
 
