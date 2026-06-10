@@ -31,7 +31,7 @@ PORT = int(os.environ.get("LEADPROXY_PORT", "3010"))
 API_KEY = os.environ.get("BREVO_API_KEY", "")
 LIST_ID = int(os.environ.get("BREVO_LIST_ID", "0") or "0")
 SENDER_EMAIL = os.environ.get("BREVO_SENDER_EMAIL", "")
-SENDER_NAME = os.environ.get("BREVO_SENDER_NAME", "Regenfänger")
+SENDER_NAME = os.environ.get("BREVO_SENDER_NAME", "Aquatum")
 NOTIFY_EMAIL = os.environ.get("LEAD_NOTIFY_EMAIL", "")
 BREVO_API = "https://api.brevo.com/v3"
 EMAIL_RE = re.compile(r"^[^\s@]+@[^\s@]+\.[^\s@]+$")
@@ -66,6 +66,7 @@ def store_lead(f, client_ip):
         return
     rec = {
         "ts": time.strftime("%Y-%m-%dT%H:%M:%S%z"),
+        "produkt": f.get("PRODUKT", ""),
         "vorname": f.get("FIRSTNAME", ""),
         "nachname": f.get("LASTNAME", ""),
         "email": f.get("EMAIL", ""),
@@ -249,9 +250,9 @@ def send_eval_mail(f):
 <tr><td style="padding:8px 0;border-bottom:1px solid #e3edf3">Geschätzte Folgekosten</td><td style="padding:8px 0;border-bottom:1px solid #e3edf3;text-align:right;font-weight:700">CHF {kosten}/Jahr</td></tr>
 {f'<tr><td style="padding:8px 0">Region</td><td style="padding:8px 0;text-align:right;font-weight:700">{region}</td></tr>' if region else ''}
 </table>
-<p>Ein Experte vom Regenfänger meldet sich für Ihre <strong>kostenlose Beratung vor Ort</strong>. So erfahren Sie genau, wie viel Trinkwasser Sie mit eigenem, aufbereitetem Regenwasser ersetzen können.</p>
-<p>Herzliche Grüsse<br>Ihr Regenfänger-Team</p>
-<p style="font-size:12px;color:#7488a0;margin-top:24px">Regenfänger · aus Regen zum Trinkwasser · +41 61 851 00 89 · regenfaenger.ch</p>
+<p>Ein Experte von Aquatum meldet sich für Ihre <strong>kostenlose Beratung vor Ort</strong>. So erfahren Sie genau, welche Wasseraufbereitung sich für Sie lohnt.</p>
+<p>Herzliche Grüsse<br>Ihr Aquatum-Team</p>
+<p style="font-size:12px;color:#7488a0;margin-top:24px">Aquatum AG · Wasser-Experten Schweiz · +41 61 851 00 89 · aquatum.ch</p>
 </div></body></html>"""
     payload = {
         "sender": {"name": SENDER_NAME, "email": SENDER_EMAIL},
@@ -263,11 +264,12 @@ def send_eval_mail(f):
 
 
 def send_notify_mail(f):
-    """Interne Benachrichtigung an das Regenfänger-/Leadhunter-Team bei jedem Lead."""
+    """Interne Benachrichtigung an das Aquatum-/Leadhunter-Team bei jedem Lead."""
     if not SENDER_EMAIL or not NOTIFY_EMAIL:
         return None, "no notify recipient configured"
     name = (f.get("FIRSTNAME", "") + " " + f.get("LASTNAME", "")).strip() or "—"
     fields = [
+        ("Produkt", f.get("PRODUKT", "")),
         ("Name", name),
         ("E-Mail", f.get("EMAIL", "")),
         ("Telefon", f.get("TELEFON", "")),
@@ -287,10 +289,10 @@ def send_notify_mail(f):
     )
     html = f"""<!DOCTYPE html><html lang="de"><body style="font-family:Arial,Helvetica,sans-serif;color:#1a2b3c;line-height:1.5;margin:0;padding:24px;background:#f4f8fb">
 <div style="max-width:560px;margin:0 auto;background:#fff;border-radius:12px;padding:28px">
-<h1 style="font-size:20px;margin:0 0 4px">Neuer Lead · Regenfänger</h1>
+<h1 style="font-size:20px;margin:0 0 4px">Neuer Lead · Aquatum</h1>
 <p style="margin:0 0 16px;color:#7488a0">{name} · Score {f.get('SCORE', '?')}/100</p>
 <table style="width:100%;border-collapse:collapse;font-size:14px">{rows}</table>
-<p style="font-size:12px;color:#7488a0;margin-top:20px">Automatische Benachrichtigung von regenfaenger.ch · Antwort geht direkt an den Lead.</p>
+<p style="font-size:12px;color:#7488a0;margin-top:20px">Automatische Benachrichtigung von aquatum.ch · Antwort geht direkt an den Lead.</p>
 </div></body></html>"""
     payload = {
         "sender": {"name": SENDER_NAME, "email": SENDER_EMAIL},
