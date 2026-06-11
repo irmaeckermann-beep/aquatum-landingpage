@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Aquatum Wasserfilter: gesundes Wasser für jeden Haushalt | Wasser-Check</title>
-  <meta name="description" content="Gefiltertes, gesundes Wasser für Miete und Eigenheim. Aquatum Wasserfilter entfernen Kalk, Chlor und Belastungen, direkt am Hahn oder fürs ganze Haus. Jetzt kostenlosen Wasser-Check machen." />
+  <title>Wasserfilter &amp; Regenfänger: gesundes Wasser für die Schweiz | Wasserrapport</title>
+  <meta name="description" content="Gesundes, reines Wasser, ob gefiltert aus dem Hahn oder aus Regenwasser. Machen Sie den Wasser-Check und holen Sie sich Ihren persönlichen Wasserrapport. Kostenlose Beratung von Aquatum AG &amp; Regenfänger." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
@@ -15,13 +15,16 @@
   <!-- ============ HEADER ============ -->
   <header class="site-header" id="top">
     <div class="container header-inner">
-      <a href="#top" class="logo"><img src="assets/logo-aquatum.svg" alt="Aquatum AG" /></a>
+      <a href="#top" class="logo logo-pair">
+        <img src="assets/logo-regenfaenger.svg" alt="Regenfänger" />
+        <span class="logo-sep"></span>
+        <img src="assets/logo-aquatum.svg" alt="Aquatum AG" />
+      </a>
       <nav class="nav">
-        <a href="regenfaenger.html" class="nav-switch">Regenfänger</a>
-        <a href="#problem">Das Problem</a>
+        <a href="#loesungen">Lösungen</a>
         <a href="#rechner">Wasser-Check</a>
-        <a href="#konzepte">Filteranlagen</a>
-        <a href="#anmeldung" class="nav-cta">Gratis-Beratung</a>
+        <a href="#problem">Das Problem</a>
+        <a href="#anmeldung" class="nav-cta">Wasserrapport sichern</a>
       </nav>
     </div>
   </header>
@@ -31,37 +34,48 @@
     <div class="hero-bg"></div>
     <div class="container hero-inner">
       <div class="hero-text">
-        <span class="eyebrow">Aquatum AG · Schweizer Wasserfilter-Experten</span>
-        <h1>Gesundes, gefiltertes Wasser für <em>jeden</em> Haushalt.</h1>
+        <span class="eyebrow">Aquatum AG &amp; Regenfänger · Schweizer Wasser-Experten</span>
+        <h1>Gesundes, reines Wasser, <em>ganz nach Ihrem Leben</em>.</h1>
         <p class="lead">
-          Ihr Leitungswasser sieht klar aus, doch Kalk, Chlor und feine Belastungen
-          schmeckt und sieht man kaum. Der Aquatum Wasserfilter entfernt sie zuverlässig,
-          direkt am Wasserhahn für die Mietwohnung oder als Anlage für das ganze Haus.
-          Finden Sie in 60&nbsp;Sekunden heraus, was wirklich aus Ihrem Hahn kommt.
+          Zwei Wege zu besserem Wasser: Der <strong>Aquatum Wasserfilter</strong> entfernt
+          Kalk, Chlor und Belastungen, direkt am Hahn für die Mietwohnung oder fürs ganze
+          Haus. Der <strong>Regenfänger</strong> macht aus Regenwasser Ihr eigenes Trinkwasser.
+          Machen Sie den Wasser-Check und holen Sie sich Ihren persönlichen Wasserrapport.
         </p>
         <div class="hero-cta">
-          <a href="#rechner" class="btn btn-primary">Wasser-Score in 60 Sekunden aufdecken</a>
+          <a href="#rechner" class="btn btn-primary">Wasser-Check in 60 Sekunden starten</a>
         </div>
         <ul class="hero-trust">
-          <li>✓ Für Mietwohnung &amp; Eigenheim</li>
+          <li>✓ Für Mietwohnung, Eigenheim &amp; Betrieb</li>
           <li>✓ Schweizer Familienunternehmen</li>
-          <li>✓ Über 2'000 zufriedene Haushalte</li>
+          <li>✓ Kostenlos &amp; unverbindlich</li>
         </ul>
       </div>
+
       <div class="hero-card hero-form-card">
-        <h3 class="hero-form-title">Gratis-Beratung anfordern</h3>
-        <p class="hero-form-sub">Unverbindlich &amp; kostenlos. Wir melden uns zeitnah bei Ihnen.</p>
+        <h3 class="hero-form-title">Ihren Wasserrapport sichern</h3>
+        <p class="hero-form-sub">Kostenlos &amp; unverbindlich. Gleich als PDF, plus persönliche Beratung.</p>
         <form id="heroForm" novalidate>
+          <div class="field">
+            <label for="hfProdukt">Beratung für *</label>
+            <select id="hfProdukt" name="PRODUKT" required>
+              <option value="Wasserfilter">Wasserfilter</option>
+              <option value="Regenfänger">Regenfänger</option>
+              <option value="Beides">Beides</option>
+            </select>
+          </div>
           <input type="text" id="hfFirst" name="FIRSTNAME" placeholder="Vorname *" autocomplete="given-name" required />
           <input type="email" id="hfEmail" name="EMAIL" placeholder="E-Mail *" autocomplete="email" required />
-          <input type="tel" id="hfPhone" name="TELEFON" placeholder="Telefon (für schnellen Rückruf)" autocomplete="tel" />
-          <input type="hidden" name="PRODUKT" value="Aquatum Wasserfilter (Schnellanfrage)" />
+          <div class="form-row">
+            <input type="tel" id="hfPhone" name="TELEFON" placeholder="Telefon" autocomplete="tel" />
+            <input type="text" id="hfZip" name="PLZ_ORT" placeholder="PLZ / Wohnort *" autocomplete="postal-code" required />
+          </div>
           <input type="text" name="email_address_check" value="" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;" />
           <label class="hero-consent">
             <input type="checkbox" id="hfConsent" name="OPT_IN" value="1" required />
             <span>Ich bin einverstanden, dass Aquatum AG mich kontaktiert. Es gilt die <a href="datenschutz.html" target="_blank" rel="noopener">Datenschutzerklärung</a>.</span>
           </label>
-          <button type="submit" class="btn btn-primary btn-full" id="heroSubmit">Gratis-Beratung anfordern</button>
+          <button type="submit" class="btn btn-primary btn-full" id="heroSubmit">Wasserrapport herunterladen</button>
           <p class="form-error" id="heroError" hidden></p>
         </form>
         <p class="hero-form-foot">Unsicher? <a href="#rechner">Erst den Wasser-Check machen →</a></p>
@@ -69,47 +83,48 @@
     </div>
   </section>
 
-  <!-- ============ AUSWAHL: MIETE vs EIGENHEIM ============ -->
+  <!-- ============ ZWEI LÖSUNGEN ============ -->
   <section class="section duo" id="loesungen">
     <div class="container">
-      <span class="section-eyebrow">Was passt zu Ihnen?</span>
-      <h2>Ein Filter für jede Wohnsituation</h2>
+      <span class="section-eyebrow">Zwei Lösungen, ein Ziel: gesundes Wasser</span>
+      <h2>Welcher Weg passt zu Ihnen?</h2>
       <p class="section-intro">
-        Ob Sie zur Miete wohnen oder im eigenen Haus, für beides gibt es die passende
-        Aquatum-Lösung. Wählen Sie Ihre Situation:
+        Ob Sie zur Miete wohnen, ein Eigenheim besitzen oder sich ganz unabhängig machen
+        möchten: Für jede Situation gibt es die passende Lösung. Im Zweifel beraten wir Sie
+        kostenlos, welche, oder ob beide kombiniert, am meisten bringt.
       </p>
 
       <div class="duo-grid">
         <article class="duo-card">
-          <div class="duo-icon">🏢</div>
-          <h3>Für die Mietwohnung</h3>
+          <div class="duo-logo"><img src="assets/logo-regenfaenger.svg" alt="Regenfänger" /></div>
+          <h3>Aus Regenwasser wird Trinkwasser</h3>
           <p>
-            Der Filter wird einfach an Ihren Wasserhahn angeschlossen, ganz ohne Umbau.
-            Sofort gesundes, gefiltertes Wasser, und beim Umzug nehmen Sie ihn einfach mit.
+            Der Regenfänger sammelt Regenwasser und bereitet es bis zur Trinkwasserqualität
+            auf. So senken Sie Ihren Trinkwasserverbrauch um bis zu 50&nbsp;% und werden
+            unabhängig vom Versorger, ideal fürs Eigenheim.
           </p>
           <ul class="duo-list">
-            <li>✓ Direkt am Hahn, keine baulichen Eingriffe</li>
-            <li>✓ Perfekt für Mieterinnen und Mieter</li>
-            <li>✓ Beim Umzug mitnehmbar</li>
-            <li>✓ Filtert Kalk, Chlor &amp; Geschmacksstoffe</li>
+            <li>✓ Bis zu 50% weniger Trinkwasser vom Versorger</li>
+            <li>✓ Trinkwasser in Quellqualität aus eigenem Regenwasser</li>
+            <li>✓ Nachhaltig, ideal für Haus &amp; Garten</li>
           </ul>
-          <button type="button" class="btn btn-outline btn-full pkg-cta" data-paket="Filter für Mietwohnung">Filter für die Wohnung →</button>
+          <a href="regenfaenger.html" class="btn btn-outline btn-full">Mehr zum Regenfänger →</a>
         </article>
 
         <article class="duo-card">
-          <div class="duo-icon">🏡</div>
-          <h3>Fürs Eigenheim</h3>
+          <div class="duo-logo"><img src="assets/logo-aquatum.svg" alt="Aquatum" /></div>
+          <h3>Gefiltertes Wasser für jeden Haushalt</h3>
           <p>
-            Eine Filteranlage für den ganzen Haushalt schützt Leitungen und Geräte und
-            liefert an jedem Hahn reines, weiches Wasser, vom Kalkschutz bis zur Umkehrosmose.
+            Die Aquatum Filteranlage entfernt Kalk, Chlor und Belastungen, direkt am
+            Wasserhahn für die Mietwohnung oder als Anlage fürs ganze Haus. Sofort
+            gesundes, wohlschmeckendes Wasser, ohne Umbau.
           </p>
           <ul class="duo-list">
-            <li>✓ Schutz für Boiler, Geräte &amp; Leitungen</li>
-            <li>✓ Reines, weiches Wasser im ganzen Haus</li>
-            <li>✓ Vom Kalkschutz bis zur Quellqualität</li>
-            <li>✓ Weniger Reinigungsmittel &amp; Energie</li>
+            <li>✓ Für Mietwohnung &amp; Eigenheim, kein Umbau nötig</li>
+            <li>✓ Filtert Kalk, Chlor &amp; Geschmacksstoffe</li>
+            <li>✓ Bis zur Umkehrosmose in Quellqualität</li>
           </ul>
-          <button type="button" class="btn btn-primary btn-full pkg-cta" data-paket="Filteranlage fürs Eigenheim">Anlage fürs Haus →</button>
+          <button type="button" class="btn btn-primary btn-full pkg-cta" data-paket="Aquatum Wasserfilter">Beratung anfordern →</button>
         </article>
       </div>
     </div>
@@ -121,53 +136,37 @@
       <span class="section-eyebrow">Die unsichtbare Belastung</span>
       <h2>„Grenzwert eingehalten" heisst nicht „gesund"</h2>
       <p class="section-intro">
-        Ihr Wasser erfüllt die gesetzlichen Grenzwerte, ein Etikett, das zwar beruhigt,
-        aber wenig aussagt, denn „erlaubt" ist nicht dasselbe wie „rein". Vier Belastungen
-        treffen besonders viele Schweizer Haushalte, und das meist jahrelang unbemerkt:
+        Ihr Wasser erfüllt die gesetzlichen Grenzwerte, doch „erlaubt" ist nicht dasselbe
+        wie „rein". Vier Belastungen treffen besonders viele Schweizer Haushalte, und das
+        meist jahrelang unbemerkt:
       </p>
 
       <div class="problem-grid">
         <article class="problem-card">
           <div class="problem-icon">🪨</div>
           <h3>Kalk &amp; hartes Wasser</h3>
-          <p>
-            In weiten Teilen der Schweiz liegt die Wasserhärte über 25&nbsp;°fH.
-            Kalk verstopft Leitungen, zerstört Geräte und verkürzt die Lebensdauer
-            von Waschmaschine, Boiler &amp; Kaffeemaschine erheblich.
-          </p>
+          <p>In weiten Teilen der Schweiz über 25&nbsp;°fH. Kalk verstopft Leitungen, zerstört Geräte und verkürzt deren Lebensdauer erheblich.</p>
         </article>
         <article class="problem-card">
           <div class="problem-icon">🔧</div>
           <h3>Alte Hausleitungen</h3>
-          <p>
-            In Gebäuden vor 1970 finden sich noch Blei- und Kupferleitungen.
-            Schwermetalle können sich im Stehwasser anreichern, was besonders kritisch
-            für Kinder und Schwangere ist.
-          </p>
+          <p>In Gebäuden vor 1970 noch Blei- und Kupferleitungen. Schwermetalle können sich im Stehwasser anreichern, kritisch für Kinder.</p>
         </article>
         <article class="problem-card">
           <div class="problem-icon">🌾</div>
           <h3>Pestizid- &amp; Nitratrückstände</h3>
-          <p>
-            In landwirtschaftlich geprägten Regionen werden im Grundwasser regelmässig
-            Rückstände von Pflanzenschutzmitteln und Nitrat nachgewiesen, und das teils
-            nahe den Grenzwerten.
-          </p>
+          <p>In landwirtschaftlichen Regionen regelmässig im Grundwasser nachgewiesen, teils nahe den Grenzwerten.</p>
         </article>
         <article class="problem-card">
           <div class="problem-icon">🧫</div>
           <h3>Mikroplastik &amp; Chlor</h3>
-          <p>
-            Mikroplastikpartikel gelangen über Verteilnetze ins Wasser, einige
-            Gemeinden chloren zur Desinfektion. Beides beeinflusst Geschmack und
-            Reinheit Ihres Trinkwassers.
-          </p>
+          <p>Gelangen über Verteilnetze ins Wasser oder werden zur Desinfektion zugesetzt. Beides beeinflusst Geschmack und Reinheit.</p>
         </article>
       </div>
 
       <div class="problem-stats">
-        <div class="stat"><strong>3'500 t</strong><span>Reinigungsmittel jährlich extra wegen hartem Wasser*</span></div>
-        <div class="stat"><strong>bis 30%</strong><span>höherer Energieverbrauch durch verkalkte Boiler*</span></div>
+        <div class="stat"><strong>1 von 3</strong><span>Haushalten lebt mit sehr hartem Wasser*</span></div>
+        <div class="stat"><strong>bis 30%</strong><span>mehr Energieverbrauch durch verkalkte Boiler*</span></div>
         <div class="stat"><strong>~CHF 500</strong><span>vermeidbare Folgekosten pro Haushalt &amp; Jahr*</span></div>
       </div>
       <p class="stats-note">* Schätzwerte auf Basis von Branchen- und Verbrauchsdaten. Tatsächliche Werte variieren je nach Region und Haushalt.</p>
@@ -178,11 +177,11 @@
   <section class="section calc" id="rechner">
     <div class="container">
       <span class="section-eyebrow">Ihr persönlicher Wasser-Check</span>
-      <h2>Wie schlecht steht es um Ihr Wasser? Finden Sie es jetzt heraus.</h2>
+      <h2>Wie steht es um Ihr Wasser? Ihr Wasserrapport in 60 Sekunden.</h2>
       <p class="section-intro">
-        Vier Fragen, 60 Sekunden, schonungslos ehrlich: Sie erhalten sofort Ihren
-        Wasser-Score, die Höhe Ihrer vermeidbaren Folgekosten und eine klare Empfehlung,
-        welcher Filter zu Ihnen passt, und das ganz ohne Anmeldung.
+        Vier Fragen, 60 Sekunden, ganz ohne Anmeldung: Sie erhalten sofort Ihren
+        Wasser-Score, Ihre geschätzte Wasserhärte und Ihre vermeidbaren Folgekosten.
+        Den vollständigen Wasserrapport als PDF sichern Sie sich anschliessend gratis.
       </p>
 
       <div class="calc-wrap">
@@ -264,7 +263,7 @@
 
         <div class="calc-result calc-placeholder" id="calcPlaceholder">
           <div class="placeholder-ring">?</div>
-          <h3>Ihre Auswertung erscheint hier</h3>
+          <h3>Ihr Wasserrapport erscheint hier</h3>
           <p>Beantworten Sie links die vier Fragen, dann sehen Sie sofort Ihren Wasser-Score, Ihre geschätzte Wasserhärte und Ihre vermeidbaren Folgekosten.</p>
         </div>
 
@@ -285,77 +284,12 @@
               <span class="metric-label">vermeidbare Folgekosten / Jahr</span>
             </div>
           </div>
-          <a href="#anmeldung" class="btn btn-primary btn-full" id="resultCta">Kostenlose Detail-Analyse anfordern →</a>
+          <a href="#anmeldung" class="btn btn-primary btn-full" id="resultCta">Wasserrapport als PDF sichern →</a>
           <button type="button" class="btn btn-text" id="calcReset">Neu berechnen</button>
         </div>
       </div>
     </div>
   </section>
-
-  <!-- ============ FILTERANLAGEN / PAKETE ============ -->
-  <section class="section packages" id="konzepte">
-    <div class="container">
-      <span class="section-eyebrow">Unsere Filteranlagen</span>
-      <h2>Die richtige Filteranlage für Ihr Wasser</h2>
-      <p class="section-intro">
-        Vom kompakten Filter für die Mietwohnung über reines, weiches Wasser für die
-        ganze Familie bis hin zur Umkehrosmose in Quellqualität. Welche Lösung zu Ihnen
-        passt, klären wir kostenlos in der Wasseranalyse.
-      </p>
-
-      <div class="package-grid">
-        <article class="package-card">
-          <div class="package-img"><img src="assets/regenwasser.webp" alt="Kompakter Wasserfilter für die Mietwohnung" /></div>
-          <h3>Filter für die Wohnung</h3>
-          <p class="package-sub">Gefiltertes Wasser direkt am Hahn</p>
-          <ul class="package-list">
-            <li>✓ Anschluss am Wasserhahn, kein Umbau</li>
-            <li>✓ Filtert Kalk, Chlor &amp; Geschmacksstoffe</li>
-            <li>✓ Ideal für Mietwohnungen</li>
-            <li>✓ Beim Umzug mitnehmbar</li>
-          </ul>
-          <button type="button" class="btn btn-outline btn-full pkg-cta" data-paket="Filter für die Wohnung">Beratung anfordern</button>
-        </article>
-
-        <article class="package-card featured">
-          <div class="package-flag">Beliebteste Wahl</div>
-          <div class="package-img"><img src="assets/hero-wasser.jpg" alt="Komfort-Wasserfilter für den ganzen Haushalt" /></div>
-          <h3>Komfort Filter</h3>
-          <p class="package-sub">Reines, weiches &amp; wohlschmeckendes Wasser</p>
-          <ul class="package-list">
-            <li>✓ Wirksamer Kalkschutz für den ganzen Haushalt</li>
-            <li>✓ Aktivkohle-Filterung gegen Chlor &amp; Geschmack</li>
-            <li>✓ Spürbar weicheres Wasser für Haut &amp; Haar</li>
-            <li>✓ Ideal für Familien</li>
-          </ul>
-          <button type="button" class="btn btn-primary btn-full pkg-cta" data-paket="Komfort Filter">Beratung anfordern</button>
-        </article>
-
-        <article class="package-card">
-          <div class="package-img"><img src="assets/wasser-ressource.jpg" alt="Premium Umkehrosmose-Anlage" /></div>
-          <h3>Premium Osmose</h3>
-          <p class="package-sub">Höchste Reinheit für Wasser in Quellqualität</p>
-          <ul class="package-list">
-            <li>✓ Alles aus «Komfort Filter»</li>
-            <li>✓ Umkehrosmose entfernt feinste Belastungen</li>
-            <li>✓ Trinkwasser auf höchstem Niveau</li>
-            <li>✓ Für höchste Ansprüche &amp; Allergiker</li>
-          </ul>
-          <button type="button" class="btn btn-outline btn-full pkg-cta" data-paket="Premium Osmose">Beratung anfordern</button>
-        </article>
-      </div>
-
-      <p class="stats-note">Preise individuell nach Wasseranalyse &amp; Haushaltsgrösse. Die Beratung ist immer kostenlos und unverbindlich.</p>
-    </div>
-  </section>
-
-  <!-- ============ CROSS-LINK ZU REGENFÄNGER ============ -->
-  <div class="switch-band">
-    <div class="container">
-      <span>Sie besitzen ein Eigenheim mit Dach &amp; Garten? Machen Sie aus Regenwasser Ihr eigenes Trinkwasser.</span>
-      <a href="regenfaenger.html">Regenfänger entdecken →</a>
-    </div>
-  </div>
 
   <!-- ============ REFERENZEN ============ -->
   <section class="section testimonials">
@@ -370,12 +304,12 @@
         </figure>
         <figure class="testi-card">
           <div class="stars">★★★★★</div>
-          <blockquote>«Unsere Kaffeemaschine und der Boiler danken es uns. Installation sauber und schnell erledigt.»</blockquote>
+          <blockquote>«In unserer Mietwohnung war der Filter in Minuten am Hahn. Riesiger Unterschied im Geschmack.»</blockquote>
           <figcaption>— S. &amp; T. Bühler, Region Basel</figcaption>
         </figure>
         <figure class="testi-card">
           <div class="stars">★★★★★</div>
-          <blockquote>«In unserer Mietwohnung war der Filter in Minuten am Hahn. Das Wasser schmeckt jetzt deutlich besser.»</blockquote>
+          <blockquote>«Mit dem Regenfänger nutzen wir heute unser eigenes Wasser. Wasserrechnung spürbar gesunken.»</blockquote>
           <figcaption>— Familie Rohner, Solothurn</figcaption>
         </figure>
       </div>
@@ -394,35 +328,21 @@
     </div>
   </section>
 
-  <!-- ============ BILD-BAND / CTA ============ -->
-  <section class="image-band">
-    <div class="image-band-photo">
-      <img src="assets/experte.jpg" alt="Aquatum Wasser-Experten im persönlichen Gespräch" />
-    </div>
-    <div class="image-band-overlay">
-      <div class="container">
-        <h2>Persönliche Beratung durch echte Wasser-Experten</h2>
-        <p>Kompetent, unabhängig und ohne Verkaufsdruck, direkt bei Ihnen zuhause.</p>
-        <a href="#anmeldung" class="btn btn-primary">Jetzt kostenlosen Termin sichern</a>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============ ANMELDUNG ============ -->
+  <!-- ============ ANMELDUNG / WASSERRAPPORT ============ -->
   <section class="section signup" id="anmeldung">
     <div class="container signup-inner">
       <div class="signup-text">
         <span class="section-eyebrow light">Kostenlos · sofort · unverbindlich</span>
-        <h2>Jetzt anmelden &amp; Ihre Wasser-Auswertung erhalten</h2>
+        <h2>Ihren persönlichen Wasserrapport sichern</h2>
         <p>
-          Melden Sie sich in wenigen Sekunden selbst an. Nach einer kurzen Bestätigung
-          per E-Mail erhalten Sie Ihre persönliche Wasser-Auswertung automatisch in Ihr
-          Postfach, ganz ohne Wartezeit und ohne Rückruf.
+          Hinterlegen Sie kurz Ihre Daten, dann erhalten Sie Ihren Wasserrapport als PDF
+          und auf Wunsch eine kostenlose, unverbindliche Beratung, abgestimmt auf Ihre
+          Wohnsituation und Region.
         </p>
         <ul class="signup-list">
-          <li>✓ Auswertung Ihres Wasser-Scores sofort per E-Mail</li>
-          <li>✓ Konkrete Filter-Empfehlung für Ihren Haushalt</li>
-          <li>✓ Keine Kosten und keine Verpflichtung, jederzeit abmeldbar</li>
+          <li>✓ Wasserrapport als PDF sofort zum Download</li>
+          <li>✓ Konkrete Empfehlung: Filter, Regenfänger oder beides</li>
+          <li>✓ Keine Kosten, keine Verpflichtung, jederzeit abmeldbar</li>
         </ul>
         <div class="signup-contact">
           <p><strong>Lieber direkt anrufen?</strong></p>
@@ -432,8 +352,16 @@
       </div>
 
       <form class="signup-form" id="signupForm" novalidate>
-        <div class="form-badge">⚡ Auswertung sofort per E-Mail · 100&nbsp;% gratis</div>
-        <p class="form-title">Jetzt selbst anmelden &amp; Auswertung erhalten</p>
+        <div class="form-badge">⚡ Wasserrapport als PDF · 100&nbsp;% gratis</div>
+        <p class="form-title">Wasserrapport anfordern</p>
+        <div class="field">
+          <label for="produkt">Beratung für *</label>
+          <select id="produkt" name="PRODUKT" required>
+            <option value="Wasserfilter">Wasserfilter</option>
+            <option value="Regenfänger">Regenfänger</option>
+            <option value="Beides">Beides</option>
+          </select>
+        </div>
         <div class="form-row">
           <div class="field">
             <label for="firstName">Vorname *</label>
@@ -454,37 +382,35 @@
             <input type="tel" id="phone" name="TELEFON" autocomplete="tel" required />
           </div>
           <div class="field">
-            <label for="zip">PLZ / Ort *</label>
+            <label for="zip">PLZ / Wohnort *</label>
             <input type="text" id="zip" name="PLZ_ORT" autocomplete="postal-code" required />
           </div>
         </div>
         <div class="field">
           <label for="message">Nachricht (optional)</label>
-          <textarea id="message" name="NACHRICHT" rows="3" placeholder="z.B. Ihr Wasser-Score oder Ihre Frage…"></textarea>
+          <textarea id="message" name="NACHRICHT" rows="2" placeholder="z.B. Ihr Wasser-Score oder Ihre Frage…"></textarea>
         </div>
 
-        <!-- Versteckte Felder: werden automatisch aus dem Rechner befüllt und als Brevo-Kontaktattribute gespeichert -->
+        <!-- Versteckte Felder: werden automatisch aus dem Rechner befüllt -->
         <input type="hidden" id="fScore" name="SCORE" value="" />
         <input type="hidden" id="fHaerte" name="HAERTE" value="" />
         <input type="hidden" id="fKosten" name="KOSTEN" value="" />
         <input type="hidden" id="fRegion" name="REGION" value="" />
         <input type="hidden" id="fPaket" name="PAKET" value="" />
-        <input type="hidden" id="fProdukt" name="PRODUKT" value="Aquatum Wasserfilter" />
-        <!-- Honeypot gegen Spam-Bots (Brevo-Standard, leer lassen) -->
         <input type="text" name="email_address_check" value="" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;" />
 
         <label class="check consent">
           <input type="checkbox" id="consent" name="OPT_IN" value="1" required />
-          Ich melde mich an und bin einverstanden, dass Aquatum AG mir meine Wasser-Auswertung sowie Infos per E-Mail zusendet. Abmeldung jederzeit möglich. Es gelten die <a href="agb.html" target="_blank" rel="noopener">AGB</a> und die <a href="datenschutz.html" target="_blank" rel="noopener">Datenschutzerklärung</a>.
+          Ich melde mich an und bin einverstanden, dass Aquatum AG mir meinen Wasserrapport sowie Infos per E-Mail zusendet. Abmeldung jederzeit möglich. Es gelten die <a href="agb.html" target="_blank" rel="noopener">AGB</a> und die <a href="datenschutz.html" target="_blank" rel="noopener">Datenschutzerklärung</a>.
         </label>
-        <button type="submit" class="btn btn-primary btn-full" id="signupSubmit">Jetzt anmelden &amp; Auswertung erhalten</button>
+        <button type="submit" class="btn btn-primary btn-full" id="signupSubmit">Wasserrapport herunterladen</button>
         <p class="form-error" id="formError" hidden></p>
         <p class="form-note">Ihre Daten werden vertraulich behandelt und nicht an Dritte weitergegeben.</p>
 
         <div class="form-success" id="formSuccess" hidden>
           <div class="success-check">✓</div>
           <h3>Fast geschafft!</h3>
-          <p>Wir haben Ihnen eine E-Mail geschickt. Bitte bestätigen Sie darin kurz Ihre Anmeldung, danach erhalten Sie Ihre persönliche Wasser-Auswertung automatisch in Ihr Postfach.</p>
+          <p>Wir haben Ihnen eine E-Mail geschickt. Bitte bestätigen Sie darin kurz, danach erhalten Sie Ihren Wasserrapport.</p>
         </div>
       </form>
     </div>
@@ -497,20 +423,20 @@
       <h2>Gut zu wissen</h2>
       <div class="faq-list">
         <details>
-          <summary>Ist Schweizer Leitungswasser nicht ohnehin sicher?</summary>
-          <p>Schweizer Trinkwasser erfüllt strenge gesetzliche Grenzwerte und ist grundsätzlich trinkbar. Dennoch verursachen Kalk, alte Hausleitungen und regionale Belastungen reale Kosten und Komforteinbussen. Ein Filter zeigt schnell, wie viel besser es geht.</p>
+          <summary>Was ist im Wasserrapport enthalten?</summary>
+          <p>Ihr Wasserrapport fasst die wichtigsten Fakten zur Trinkwasserqualität in der Schweiz zusammen: häufige Belastungen, Wasserhärte nach Region, vermeidbare Folgekosten und Ihre konkreten Lösungen mit Filter oder Regenfänger.</p>
         </details>
         <details>
           <summary>Funktioniert ein Filter auch in der Mietwohnung?</summary>
           <p>Ja. Unser kompakter Filter wird einfach am Wasserhahn angeschlossen, ganz ohne baulichen Eingriff. Beim Umzug nehmen Sie ihn problemlos mit.</p>
         </details>
         <details>
-          <summary>Was kostet die Wasseranalyse?</summary>
-          <p>Die Erst-Analyse und Beratung sind für Sie komplett kostenlos und unverbindlich.</p>
+          <summary>Darf man Regenwasser wirklich trinken?</summary>
+          <p>Roh nicht, aber richtig aufbereitet schon. Der Regenfänger reinigt Regenwasser über mehrere Filterstufen bis zur Trinkwasserqualität. Wir planen die Anlage passend zu Ihrem Bedarf.</p>
         </details>
         <details>
-          <summary>In welchen Regionen ist Aquatum tätig?</summary>
-          <p>Aquatum AG mit Sitz in Zeiningen (AG) ist in der gesamten Deutschschweiz für Sie da. Fragen Sie einfach unverbindlich an.</p>
+          <summary>Was kostet die Beratung?</summary>
+          <p>Der Wasserrapport und die Erst-Beratung vor Ort sind komplett kostenlos und unverbindlich. Aquatum AG mit Sitz in Zeiningen (AG) ist in der gesamten Deutschschweiz für Sie da.</p>
         </details>
       </div>
     </div>
@@ -521,15 +447,16 @@
     <div class="container footer-inner">
       <div>
         <div class="footer-logos">
+          <a href="#top" class="footer-logo"><img src="assets/logo-regenfaenger.svg" alt="Regenfänger" /></a>
           <a href="#top" class="footer-logo"><img src="assets/logo-aquatum.svg" alt="Aquatum AG" /></a>
         </div>
-        <p class="footer-slogan">Aquatum AG – Ihre Schweizer Experten für Wasserfilter und Wasseraufbereitung. Auch Regenwassernutzung mit dem <a href="regenfaenger.html">Regenfänger</a>.</p>
+        <p class="footer-slogan">Aquatum AG &amp; Regenfänger – Ihre Schweizer Experten für gesundes, reines Wasser: gefiltert aus dem Hahn oder aus Regenwasser.</p>
       </div>
       <div class="footer-contact">
         <p><strong>Aquatum AG</strong></p>
         <p>Oberdorf 38 A · CH-4314 Zeiningen</p>
         <p><a href="tel:+41618510089">+41 61 851 00 89</a> · <a href="tel:+41793200089">+41 79 320 00 89</a></p>
-        <p><a href="mailto:info@aquatum.ch">info@aquatum.ch</a> · <a href="https://www.aquatum.ch" target="_blank" rel="noopener">www.aquatum.ch</a></p>
+        <p><a href="mailto:info@aquatum.ch">info@aquatum.ch</a> · <a href="https://www.aquatum.ch" target="_blank" rel="noopener">aquatum.ch</a> · <a href="https://www.regenfaenger.ch" target="_blank" rel="noopener">regenfaenger.ch</a></p>
       </div>
     </div>
     <div class="footer-bottom">
@@ -548,7 +475,7 @@
   <!-- Mobile Sticky-CTA -->
   <div class="sticky-cta">
     <a href="#rechner" class="btn btn-outline">Wasser-Check</a>
-    <a href="#anmeldung" class="btn btn-primary">Gratis-Beratung</a>
+    <a href="#anmeldung" class="btn btn-primary">Wasserrapport</a>
   </div>
 
   <script src="script.js"></script>

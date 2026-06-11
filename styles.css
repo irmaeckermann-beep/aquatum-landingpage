@@ -72,6 +72,9 @@ em { font-style: normal; color: var(--blue-500); }
 .header-inner { display: flex; align-items: center; justify-content: space-between; height: 68px; }
 .logo { display: inline-flex; align-items: center; }
 .logo img { height: 38px; width: auto; display: block; }
+.logo-pair { gap: 13px; }
+.logo-pair img { height: 28px; }
+.logo-sep { width: 1px; height: 24px; background: var(--line); display: inline-block; flex: none; }
 .nav { display: flex; align-items: center; gap: 28px; }
 .nav a { color: var(--ink); font-weight: 500; font-size: .96rem; }
 .nav a:hover { color: var(--blue-500); }
@@ -140,7 +143,15 @@ em { font-style: normal; color: var(--blue-500); }
   width: 100%; padding: 12px 14px; border: 1px solid var(--line);
   border-radius: 10px; font: inherit; color: var(--ink);
 }
-.hero-form-card input:focus { outline: none; border-color: var(--teal); box-shadow: 0 0 0 3px rgba(38,185,209,.18); }
+.hero-form-card select {
+  width: 100%; padding: 12px 14px; border: 1px solid var(--line);
+  border-radius: 10px; font: inherit; color: var(--ink); background: #fff;
+}
+.hero-form-card input:focus,
+.hero-form-card select:focus { outline: none; border-color: var(--teal); box-shadow: 0 0 0 3px rgba(38,185,209,.18); }
+.hero-form-card .field { margin-bottom: 0; }
+.hero-form-card .field label { font-size: .82rem; margin-bottom: 4px; color: var(--blue-900); }
+.hero-form-card .form-row { gap: 10px; }
 .hero-consent { display: flex; gap: 8px; align-items: flex-start; font-size: .8rem; color: var(--muted); line-height: 1.4; }
 .hero-consent input { margin-top: 3px; flex: none; }
 .hero-form-card .form-error { color: var(--bad); font-size: .85rem; margin: 0; }

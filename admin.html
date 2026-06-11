@@ -49,6 +49,7 @@
     .prod{display:inline-block;white-space:normal;font-size:.74rem;font-weight:700;padding:3px 9px;border-radius:6px;line-height:1.25}
     .prod-filter{background:#e7f3fb;color:var(--blue-700)}
     .prod-regen{background:#fdeede;color:#b4500a}
+    .prod-both{background:#e6f7f0;color:#0a7a4f}
     .empty{text-align:center;color:var(--muted);padding:48px 20px}
     .muted{color:var(--muted)}
     .hidden{display:none}
@@ -193,7 +194,8 @@
       rows.innerHTML = list.map(function(l){
         var name = (esc(l.vorname) + ' ' + esc(l.nachname)).trim() || '—';
         var score = l.score ? '<span class="score"><b>' + esc(l.score) + '</b></span>' : '';
-        var prod = l.produkt ? '<span class="prod ' + (/filter/i.test(l.produkt) ? 'prod-filter' : 'prod-regen') + '">' + esc(l.produkt) + '</span>' : '';
+        var prodCls = /beides/i.test(l.produkt) ? 'prod-both' : (/regen/i.test(l.produkt) ? 'prod-regen' : 'prod-filter');
+        var prod = l.produkt ? '<span class="prod ' + prodCls + '">' + esc(l.produkt) + '</span>' : '';
         return '<tr>'
           + '<td>' + esc(fmtDate(l.ts)) + '</td>'
           + '<td>' + prod + '</td>'

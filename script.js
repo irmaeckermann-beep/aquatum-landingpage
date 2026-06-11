@@ -67,17 +67,17 @@ calcForm.addEventListener('submit', (e) => {
     color = getCss('--good');
     title = 'Solide Wasserqualität mit Optimierungspotenzial';
     text = 'Ihr Wasser ist vergleichsweise gut. Mit gezielten Massnahmen holen Sie noch mehr Komfort und Geräteschutz heraus.';
-    ctaText = 'Kostenlose Detail-Analyse anfordern →';
+    ctaText = 'Wasserrapport als PDF sichern →';
   } else if (score >= 50) {
     color = getCss('--warn');
     title = 'Spürbare Belastung, Handlungsbedarf empfohlen';
     text = 'Kalk und/oder weitere Faktoren belasten Ihr Wasser merklich. Eine passende Aufbereitung schützt Geräte und Geldbeutel.';
-    ctaText = 'Jetzt kostenlose Analyse sichern →';
+    ctaText = 'Wasserrapport sichern & Beratung →';
   } else {
     color = getCss('--bad');
     title = 'Deutliche Belastung, wir empfehlen eine Analyse';
     text = 'Mehrere Faktoren sprechen für eine erhöhte Belastung Ihres Wassers. Eine professionelle Messung vor Ort schafft Klarheit.';
-    ctaText = 'Gratis-Analyse dringend empfohlen →';
+    ctaText = 'Wasserrapport sichern, Analyse empfohlen →';
   }
 
   // --- Score-Ring rendern ---
@@ -235,8 +235,9 @@ if (heroForm) {
 
     const name = document.getElementById('hfFirst').value.trim();
     const email = document.getElementById('hfEmail').value.trim();
-    if (!name || !document.getElementById('hfConsent').checked) {
-      showHeroError('Bitte Vorname eingeben und den Datenschutz bestätigen.');
+    const zip = document.getElementById('hfZip').value.trim();
+    if (!name || !zip || !document.getElementById('hfConsent').checked) {
+      showHeroError('Bitte Vorname und PLZ/Wohnort eingeben und den Datenschutz bestätigen.');
       return;
     }
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
@@ -281,7 +282,7 @@ if (heroForm) {
     } catch (err) {
       showHeroError('Es gab ein Problem. Bitte rufen Sie uns an: +41 61 851 00 89.');
       heroSubmit.disabled = false;
-      heroSubmit.textContent = 'Gratis-Beratung anfordern';
+      heroSubmit.textContent = 'Wasserrapport herunterladen';
     }
   });
 }

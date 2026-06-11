@@ -241,7 +241,7 @@ def send_eval_mail(f):
     region = f.get("REGION", "")
     html = f"""<!DOCTYPE html><html lang="de"><body style="font-family:Arial,Helvetica,sans-serif;color:#1a2b3c;line-height:1.6;margin:0;padding:24px;background:#f4f8fb">
 <div style="max-width:560px;margin:0 auto;background:#fff;border-radius:12px;padding:32px">
-<h1 style="font-size:22px;margin:0 0 8px">Ihre persönliche Wasser-Auswertung</h1>
+<h1 style="font-size:22px;margin:0 0 8px">Ihr persönlicher Wasserrapport</h1>
 <p>Guten Tag{(' ' + f.get('FIRSTNAME','')) if f.get('FIRSTNAME') else ''},</p>
 <p>vielen Dank für Ihren Wasser-Check. Hier Ihr Ergebnis auf einen Blick:</p>
 <table style="width:100%;border-collapse:collapse;margin:16px 0">
@@ -257,7 +257,7 @@ def send_eval_mail(f):
     payload = {
         "sender": {"name": SENDER_NAME, "email": SENDER_EMAIL},
         "to": [{"email": f["EMAIL"], "name": name or f["EMAIL"]}],
-        "subject": "Ihre persönliche Wasser-Auswertung",
+        "subject": "Ihr persönlicher Wasserrapport",
         "htmlContent": html,
     }
     return brevo("POST", "/smtp/email", payload)
