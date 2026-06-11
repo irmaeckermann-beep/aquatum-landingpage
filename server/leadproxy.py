@@ -243,7 +243,7 @@ def send_eval_mail(f):
 <div style="max-width:560px;margin:0 auto;background:#fff;border-radius:12px;padding:32px">
 <h1 style="font-size:22px;margin:0 0 8px">Ihr persönlicher Wasserrapport</h1>
 <p>Guten Tag{(' ' + f.get('FIRSTNAME','')) if f.get('FIRSTNAME') else ''},</p>
-<p>vielen Dank für Ihren Wasser-Check. Hier Ihr Ergebnis auf einen Blick:</p>
+<p>vielen Dank für Ihre Anfrage. Hier Ihr Wasserrapport auf einen Blick:</p>
 <table style="width:100%;border-collapse:collapse;margin:16px 0">
 <tr><td style="padding:8px 0;border-bottom:1px solid #e3edf3">Wasser-Score</td><td style="padding:8px 0;border-bottom:1px solid #e3edf3;text-align:right;font-weight:700">{score}/100</td></tr>
 <tr><td style="padding:8px 0;border-bottom:1px solid #e3edf3">Wasserhärte</td><td style="padding:8px 0;border-bottom:1px solid #e3edf3;text-align:right;font-weight:700">ca. {haerte} °fH</td></tr>

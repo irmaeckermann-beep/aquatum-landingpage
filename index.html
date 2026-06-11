@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Wasserfilter &amp; Regenfänger: gesundes Wasser für die Schweiz | Wasserrapport</title>
-  <meta name="description" content="Gesundes, reines Wasser, ob gefiltert aus dem Hahn oder aus Regenwasser. Machen Sie den Wasser-Check und holen Sie sich Ihren persönlichen Wasserrapport. Kostenlose Beratung von Aquatum AG &amp; Regenfänger." />
+  <meta name="description" content="Gesundes, reines Wasser, ob gefiltert aus dem Hahn oder aus Regenwasser. Erstellen Sie in 60 Sekunden Ihren persönlichen Wasserrapport. Kostenlose Beratung von Aquatum AG &amp; Regenfänger." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
@@ -22,9 +22,9 @@
       </a>
       <nav class="nav">
         <a href="#loesungen">Lösungen</a>
-        <a href="#rechner">Wasser-Check</a>
+        <a href="#rechner">Wasserrapport</a>
         <a href="#problem">Das Problem</a>
-        <a href="#anmeldung" class="nav-cta">Wasserrapport sichern</a>
+        <a href="#anmeldung" class="nav-cta">Gratis-Beratung</a>
       </nav>
     </div>
   </header>
@@ -40,10 +40,10 @@
           Zwei Wege zu besserem Wasser: Der <strong>Aquatum Wasserfilter</strong> entfernt
           Kalk, Chlor und Belastungen, direkt am Hahn für die Mietwohnung oder fürs ganze
           Haus. Der <strong>Regenfänger</strong> macht aus Regenwasser Ihr eigenes Trinkwasser.
-          Machen Sie den Wasser-Check und holen Sie sich Ihren persönlichen Wasserrapport.
+          Erstellen Sie in 60 Sekunden Ihren persönlichen Wasserrapport.
         </p>
         <div class="hero-cta">
-          <a href="#rechner" class="btn btn-primary">Wasser-Check in 60 Sekunden starten</a>
+          <a href="#rechner" class="btn btn-primary">Wasserrapport in 60 Sekunden erstellen</a>
         </div>
         <ul class="hero-trust">
           <li>✓ Für Mietwohnung, Eigenheim &amp; Betrieb</li>
@@ -64,7 +64,10 @@
               <option value="Beides">Beides</option>
             </select>
           </div>
-          <input type="text" id="hfFirst" name="FIRSTNAME" placeholder="Vorname *" autocomplete="given-name" required />
+          <div class="form-row">
+            <input type="text" id="hfFirst" name="FIRSTNAME" placeholder="Vorname *" autocomplete="given-name" required />
+            <input type="text" id="hfLast" name="LASTNAME" placeholder="Nachname *" autocomplete="family-name" required />
+          </div>
           <input type="email" id="hfEmail" name="EMAIL" placeholder="E-Mail *" autocomplete="email" required />
           <div class="form-row">
             <input type="tel" id="hfPhone" name="TELEFON" placeholder="Telefon" autocomplete="tel" />
@@ -78,7 +81,7 @@
           <button type="submit" class="btn btn-primary btn-full" id="heroSubmit">Wasserrapport herunterladen</button>
           <p class="form-error" id="heroError" hidden></p>
         </form>
-        <p class="hero-form-foot">Unsicher? <a href="#rechner">Erst den Wasser-Check machen →</a></p>
+        <p class="hero-form-foot">Unsicher? <a href="#rechner">Erst den Wasserrapport erstellen →</a></p>
       </div>
     </div>
   </section>
@@ -176,8 +179,8 @@
   <!-- ============ RECHNER ============ -->
   <section class="section calc" id="rechner">
     <div class="container">
-      <span class="section-eyebrow">Ihr persönlicher Wasser-Check</span>
-      <h2>Wie steht es um Ihr Wasser? Ihr Wasserrapport in 60 Sekunden.</h2>
+      <span class="section-eyebrow">Ihr persönlicher Wasserrapport</span>
+      <h2>Wie steht es um Ihr Wasser? Finden Sie es in 60 Sekunden heraus.</h2>
       <p class="section-intro">
         Vier Fragen, 60 Sekunden, ganz ohne Anmeldung: Sie erhalten sofort Ihren
         Wasser-Score, Ihre geschätzte Wasserhärte und Ihre vermeidbaren Folgekosten.
@@ -474,8 +477,8 @@
 
   <!-- Mobile Sticky-CTA -->
   <div class="sticky-cta">
-    <a href="#rechner" class="btn btn-outline">Wasser-Check</a>
-    <a href="#anmeldung" class="btn btn-primary">Wasserrapport</a>
+    <a href="#rechner" class="btn btn-outline">Wasserrapport</a>
+    <a href="#anmeldung" class="btn btn-primary">Gratis-Beratung</a>
   </div>
 
   <script src="script.js"></script>

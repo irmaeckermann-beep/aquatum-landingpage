@@ -234,10 +234,11 @@ if (heroForm) {
     if (heroForm.querySelector('[name="email_address_check"]').value) return;
 
     const name = document.getElementById('hfFirst').value.trim();
+    const last = document.getElementById('hfLast').value.trim();
     const email = document.getElementById('hfEmail').value.trim();
     const zip = document.getElementById('hfZip').value.trim();
-    if (!name || !zip || !document.getElementById('hfConsent').checked) {
-      showHeroError('Bitte Vorname und PLZ/Wohnort eingeben und den Datenschutz bestätigen.');
+    if (!name || !last || !zip || !document.getElementById('hfConsent').checked) {
+      showHeroError('Bitte Vor- und Nachname sowie PLZ/Wohnort eingeben und den Datenschutz bestätigen.');
       return;
     }
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
