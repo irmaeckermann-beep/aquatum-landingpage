@@ -72,9 +72,9 @@ em { font-style: normal; color: var(--blue-500); }
 .header-inner { display: flex; align-items: center; justify-content: space-between; height: 68px; }
 .logo { display: inline-flex; align-items: center; }
 .logo img { height: 38px; width: auto; display: block; }
-.logo-pair { gap: 13px; }
-.logo-pair img { height: 28px; }
-.logo-sep { width: 1px; height: 24px; background: var(--line); display: inline-block; flex: none; }
+.logo-pair { gap: 16px; }
+.logo-pair img { height: 30px; }
+.logo-sep { width: 1px; height: 26px; background: var(--line); display: inline-block; flex: none; }
 .nav { display: flex; align-items: center; gap: 28px; }
 .nav a { color: var(--ink); font-weight: 500; font-size: .96rem; }
 .nav a:hover { color: var(--blue-500); }
@@ -537,6 +537,9 @@ em { font-style: normal; color: var(--blue-500); }
   .package-card.featured { grid-column: auto; }
   .section { padding: 60px 0; }
   .hero-inner { padding: 50px 24px 64px; }
+  .logo-pair { gap: 10px; }
+  .logo-pair img { height: 22px; }
+  .logo-sep { height: 20px; }
 }
 
 /* ============ Rechtliche Seiten (Impressum / AGB / Datenschutz) ============ */
