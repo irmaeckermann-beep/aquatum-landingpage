@@ -34,6 +34,15 @@ def banner(filename, height_mm, width=None):
     bio.seek(0)
     return RLImage(bio, width=w, height=h)
 
+
+def image_w(filename, width):
+    """Bild auf gegebene Breite skalieren (Seitenverhältnis erhalten), zentriert."""
+    p = os.path.join(ASSETS, filename)
+    pw, ph = PILImage.open(p).size
+    im = RLImage(p, width=width, height=width * ph / pw)
+    im.hAlign = "CENTER"
+    return im
+
 BLUE900 = colors.HexColor("#0a2540")
 BLUE700 = colors.HexColor("#0e4d8c")
 BLUE500 = colors.HexColor("#1488d8")
@@ -202,8 +211,6 @@ story.append(PageBreak())
 # ============ SEITE 2 – BELASTUNGEN ============
 story.append(Spacer(1, 4))
 story.append(Paragraph("Die 4 grössten Wasser-Belastungen", h2))
-story.append(Spacer(1, 10))
-story.append(banner("problem-kalk.jpg", 38))
 story.append(Spacer(1, 12))
 story.append(card_row(
     card(BLUE700, "Kalk &amp; hartes Wasser",
@@ -223,32 +230,14 @@ story.append(card_row(
          "Beeinflussen Geschmack und Reinheit."),
 ))
 story.append(Spacer(1, 22))
-story.append(Paragraph("Wasserhärte nach Region", h2))
-story.append(Spacer(1, 10))
-hd = [
-    [Paragraph("HÄRTEGRAD", ps("th", fontName="Helvetica-Bold", fontSize=10, textColor=WHITE)),
-     Paragraph("TYPISCHE °fH", ps("th", fontName="Helvetica-Bold", fontSize=10, textColor=WHITE)),
-     Paragraph("BEISPIEL-KANTONE", ps("th", fontName="Helvetica-Bold", fontSize=10, textColor=WHITE))],
-    [Paragraph("Sehr weich", body), Paragraph("8–15", body), Paragraph("TI, UR, GR, OW, GL", body)],
-    [Paragraph("Weich–mittel", body), Paragraph("16–24", body), Paragraph("VS, SG, BE, ZH", body)],
-    [Paragraph("Mittel–hart", body), Paragraph("26–31", body), Paragraph("GE, ZG, BS, VD, LU, FR", body)],
-    [Paragraph("<b>Hart–sehr hart</b>", body), Paragraph("<b>34–40</b>", body), Paragraph("<b>AG, SO, BL, NE, SH, JU</b>", body)],
-]
-t2 = Table(hd, colWidths=[CONTENT_W * 0.30, CONTENT_W * 0.22, CONTENT_W * 0.48])
-t2.setStyle(TableStyle([
-    ("BACKGROUND", (0, 0), (-1, 0), BLUE900),
-    ("ROWBACKGROUNDS", (0, 1), (-1, -1), [WHITE, CYAN50]),
-    ("BACKGROUND", (0, 4), (-1, 4), colors.HexColor("#fdeede")),
-    ("LINEBELOW", (0, 0), (-1, -1), 0.4, LINE),
-    ("VALIGN", (0, 0), (-1, -1), "MIDDLE"),
-    ("LEFTPADDING", (0, 0), (-1, -1), 12),
-    ("TOPPADDING", (0, 0), (-1, -1), 10),
-    ("BOTTOMPADDING", (0, 0), (-1, -1), 10),
-]))
-story.append(t2)
+story.append(Paragraph("Wo das Wasser am härtesten ist", h2))
 story.append(Spacer(1, 8))
-story.append(Paragraph("Bereits ab ca. 25 °fH verursacht Kalk spürbare Folgekosten von oft "
-                       "mehreren hundert Franken pro Jahr.", small))
+story.append(image_w("wasserhaerte-karte.png", 150 * mm))
+story.append(Spacer(1, 6))
+story.append(Paragraph("Je dunkler, desto härter: Besonders betroffen sind <b>Jura, Schaffhausen, "
+                       "Basel-Landschaft, Neuenburg, Solothurn und Aargau</b> sowie das Mittelland. "
+                       "Weich ist das Wasser vor allem im Tessin, in Graubünden und am Alpenrand. "
+                       "Schon ab ca. 25 °fH verursacht Kalk spürbare Folgekosten.", body))
 story.append(PageBreak())
 
 # ============ SEITE 3 – LÖSUNGEN ============
