@@ -331,3 +331,38 @@ window.exportLeads = function () {
   const a = document.createElement('a');
   a.href = url; a.download = 'aquatum-leads.csv'; a.click();
 };
+
+// ---------- Interaktive Wasserhärte-Karte ----------
+const chMap = document.getElementById('chMap');
+if (chMap && chMap.dataset.src) {
+  fetch(chMap.dataset.src)
+    .then((r) => r.text())
+    .then((svg) => {
+      chMap.innerHTML = svg;
+      const tip = document.createElement('div');
+      tip.className = 'ch-tip';
+      tip.hidden = true;
+      chMap.appendChild(tip);
+
+      const cantons = chMap.querySelectorAll('.canton');
+      const clearActive = () => cantons.forEach((c) => c.classList.remove('active'));
+
+      const showTip = (e, p) => {
+        const cat = p.getAttribute('data-cat');
+        tip.innerHTML = '<strong>' + p.getAttribute('data-name') + '</strong><br>' +
+          p.getAttribute('data-haerte') + ' °fH · ' + cat;
+        tip.hidden = false;
+        const r = chMap.getBoundingClientRect();
+        tip.style.left = (e.clientX - r.left) + 'px';
+        tip.style.top = (e.clientY - r.top) + 'px';
+      };
+
+      cantons.forEach((p) => {
+        p.addEventListener('mousemove', (e) => showTip(e, p));
+        p.addEventListener('mouseenter', () => { clearActive(); p.classList.add('active'); });
+        p.addEventListener('mouseleave', () => { p.classList.remove('active'); tip.hidden = true; });
+        p.addEventListener('click', (e) => { clearActive(); p.classList.add('active'); showTip(e, p); });
+      });
+    })
+    .catch(() => { /* Karte optional */ });
+}

@@ -241,9 +241,21 @@ em { font-style: normal; color: var(--blue-500); }
 .stat span { font-size: .92rem; color: #cfe0ef; }
 .stats-note { font-size: .78rem; color: var(--muted); margin-top: 16px; }
 .hardness-map { margin: 44px auto 0; max-width: 680px; text-align: center; }
-.hardness-map h3 { color: var(--blue-900); font-size: 1.35rem; margin-bottom: 16px; }
-.hardness-map img { width: 100%; height: auto; display: block; }
-.hardness-map figcaption { color: var(--muted); font-size: .92rem; margin: 14px auto 0; max-width: 600px; }
+.hardness-map h3 { color: var(--blue-900); font-size: 1.35rem; margin-bottom: 18px; }
+.hardness-map figcaption { color: var(--muted); font-size: .92rem; margin: 16px auto 0; max-width: 600px; }
+.ch-map-wrap { position: relative; max-width: 640px; margin: 0 auto; }
+.ch-map { width: 100%; height: auto; display: block; }
+.canton { stroke: #fff; stroke-width: 1; cursor: pointer; transition: stroke .12s ease; }
+.canton:hover, .canton.active { stroke: var(--blue-900); stroke-width: 2.4; }
+.canton-label { font-family: 'Inter', sans-serif; font-weight: 700; font-size: 15px; text-anchor: middle; dominant-baseline: central; pointer-events: none; }
+.ch-tip {
+  position: absolute; transform: translate(-50%, -115%); background: var(--blue-900); color: #fff;
+  padding: 7px 12px; border-radius: 9px; font-size: .85rem; line-height: 1.35; white-space: nowrap;
+  pointer-events: none; box-shadow: 0 10px 24px -10px rgba(0,0,0,.55); z-index: 6;
+}
+.ch-legend { display: flex; gap: 18px; justify-content: center; flex-wrap: wrap; margin-top: 16px; font-size: .88rem; color: var(--muted); }
+.ch-legend span { display: inline-flex; align-items: center; gap: 7px; }
+.ch-legend i { width: 16px; height: 16px; border-radius: 4px; display: inline-block; }
 
 /* ---------- Calculator ---------- */
 .calc-wrap {
