@@ -40,6 +40,7 @@ const calcForm = document.getElementById('calcForm');
 const calcResult = document.getElementById('calcResult');
 const calcReset = document.getElementById('calcReset');
 
+if (calcForm && calcReset) {
 calcForm.addEventListener('submit', (e) => {
   e.preventDefault();
 
@@ -112,6 +113,7 @@ calcReset.addEventListener('click', () => {
   calcForm.reset();
   calcForm.scrollIntoView({ behavior: 'smooth', block: 'center' });
 });
+}
 
 function getCss(varName) {
   return getComputedStyle(document.documentElement).getPropertyValue(varName).trim();

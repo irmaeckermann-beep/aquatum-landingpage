@@ -22,9 +22,8 @@
       </a>
       <nav class="nav">
         <a href="#loesungen">Lösungen</a>
-        <a href="#rechner">Wasserrapport</a>
         <a href="#problem">Das Problem</a>
-        <a href="#anmeldung" class="nav-cta">Gratis-Beratung</a>
+        <a href="#anmeldung" class="nav-cta">Wasserrapport sichern</a>
       </nav>
     </div>
   </header>
@@ -40,10 +39,11 @@
           Zwei Wege zu besserem Wasser: Der <strong>Aquatum Wasserfilter</strong> entfernt
           Kalk, Chlor und Belastungen, direkt am Hahn für die Mietwohnung oder fürs ganze
           Haus. Der <strong>Regenfänger</strong> macht aus Regenwasser Ihr eigenes Trinkwasser.
-          Erstellen Sie in 60 Sekunden Ihren persönlichen Wasserrapport.
+          Hinterlegen Sie kurz Ihre Daten und laden Sie Ihren persönlichen Wasserrapport
+          als PDF herunter, plus kostenlose Beratung auf Wunsch.
         </p>
         <div class="hero-cta">
-          <a href="#rechner" class="btn btn-primary">Wasserrapport in 60 Sekunden erstellen</a>
+          <a href="#loesungen" class="btn btn-ghost">So funktioniert's →</a>
         </div>
         <ul class="hero-trust">
           <li>✓ Für Mietwohnung, Eigenheim &amp; Betrieb</li>
@@ -81,7 +81,7 @@
           <button type="submit" class="btn btn-primary btn-full" id="heroSubmit">Wasserrapport herunterladen</button>
           <p class="form-error" id="heroError" hidden></p>
         </form>
-        <p class="hero-form-foot">Unsicher? <a href="#rechner">Erst den Wasserrapport erstellen →</a></p>
+        <p class="hero-form-foot">Lieber zuerst informieren? <a href="#loesungen">Unsere Lösungen ansehen →</a></p>
       </div>
     </div>
   </section>
@@ -173,124 +173,6 @@
         <div class="stat"><strong>~CHF 500</strong><span>vermeidbare Folgekosten pro Haushalt &amp; Jahr*</span></div>
       </div>
       <p class="stats-note">* Schätzwerte auf Basis von Branchen- und Verbrauchsdaten. Tatsächliche Werte variieren je nach Region und Haushalt.</p>
-    </div>
-  </section>
-
-  <!-- ============ RECHNER ============ -->
-  <section class="section calc" id="rechner">
-    <div class="container">
-      <span class="section-eyebrow">Ihr persönlicher Wasserrapport</span>
-      <h2>Wie steht es um Ihr Wasser? Finden Sie es in 60 Sekunden heraus.</h2>
-      <p class="section-intro">
-        Vier Fragen, 60 Sekunden, ganz ohne Anmeldung: Sie erhalten sofort Ihren
-        Wasser-Score, Ihre geschätzte Wasserhärte und Ihre vermeidbaren Folgekosten.
-        Den vollständigen Wasserrapport als PDF sichern Sie sich anschliessend gratis.
-      </p>
-
-      <div class="calc-wrap">
-        <form class="calc-form" id="calcForm">
-          <div class="field">
-            <label for="region">1. In welchem Kanton wohnen Sie? <span>(bestimmt die typische Wasserhärte)</span></label>
-            <select id="region" required>
-              <option value="" disabled selected>Kanton wählen…</option>
-              <optgroup label="Sehr weiches Wasser">
-                <option value="8">Tessin (TI)</option>
-                <option value="10">Uri (UR)</option>
-                <option value="12">Graubünden (GR)</option>
-                <option value="14">Obwalden (OW)</option>
-                <option value="15">Glarus (GL)</option>
-              </optgroup>
-              <optgroup label="Weiches bis mittleres Wasser">
-                <option value="16">Wallis (VS)</option>
-                <option value="18">Nidwalden (NW)</option>
-                <option value="18">Appenzell Innerrhoden (AI)</option>
-                <option value="19">Appenzell Ausserrhoden (AR)</option>
-                <option value="20">Schwyz (SZ)</option>
-                <option value="22">St. Gallen (SG)</option>
-                <option value="24">Bern (BE)</option>
-                <option value="24">Zürich (ZH)</option>
-              </optgroup>
-              <optgroup label="Mittleres bis hartes Wasser">
-                <option value="26">Genf (GE)</option>
-                <option value="28">Zug (ZG)</option>
-                <option value="28">Basel-Stadt (BS)</option>
-                <option value="30">Waadt (VD)</option>
-                <option value="30">Thurgau (TG)</option>
-                <option value="30">Luzern (LU)</option>
-                <option value="31">Freiburg (FR)</option>
-              </optgroup>
-              <optgroup label="Hartes bis sehr hartes Wasser">
-                <option value="34">Aargau (AG)</option>
-                <option value="35">Solothurn (SO)</option>
-                <option value="36">Basel-Landschaft (BL)</option>
-                <option value="36">Neuenburg (NE)</option>
-                <option value="38">Schaffhausen (SH)</option>
-                <option value="40">Jura (JU)</option>
-              </optgroup>
-            </select>
-          </div>
-
-          <div class="field">
-            <label for="persons">2. Wie viele Personen leben im Haushalt?</label>
-            <select id="persons" required>
-              <option value="1">1 Person</option>
-              <option value="2" selected>2 Personen</option>
-              <option value="3">3 Personen</option>
-              <option value="4">4 Personen</option>
-              <option value="5">5 oder mehr Personen</option>
-            </select>
-          </div>
-
-          <div class="field">
-            <label for="building">3. Wie alt ist das Gebäude / die Leitungen?</label>
-            <select id="building" required>
-              <option value="0">Neubau / nach 1990</option>
-              <option value="1" selected>1970–1990</option>
-              <option value="2">Vor 1970 (mögliche Blei-/Kupferleitungen)</option>
-              <option value="0.5">Weiss ich nicht</option>
-            </select>
-          </div>
-
-          <div class="field">
-            <label>4. Bemerken Sie eines dieser Anzeichen? <span>(Mehrfachauswahl)</span></label>
-            <div class="checks">
-              <label class="check"><input type="checkbox" value="1" name="sign" /> Kalkränder an Armaturen &amp; Geräten</label>
-              <label class="check"><input type="checkbox" value="1" name="sign" /> Trockene Haut / spröde Haare</label>
-              <label class="check"><input type="checkbox" value="1" name="sign" /> Geschmack/Geruch nach Chlor</label>
-              <label class="check"><input type="checkbox" value="1" name="sign" /> Hoher Verbrauch an Reinigungsmitteln</label>
-            </div>
-          </div>
-
-          <button type="submit" class="btn btn-primary btn-full">Meinen Wasser-Score anzeigen</button>
-        </form>
-
-        <div class="calc-result calc-placeholder" id="calcPlaceholder">
-          <div class="placeholder-ring">?</div>
-          <h3>Ihr Wasserrapport erscheint hier</h3>
-          <p>Beantworten Sie links die vier Fragen, dann sehen Sie sofort Ihren Wasser-Score, Ihre geschätzte Wasserhärte und Ihre vermeidbaren Folgekosten.</p>
-        </div>
-
-        <div class="calc-result" id="calcResult" hidden>
-          <div class="score-ring" id="scoreRing">
-            <span class="score-number" id="scoreNumber">–</span>
-            <span class="score-label">von 100</span>
-          </div>
-          <h3 id="resultTitle">Ihr Ergebnis</h3>
-          <p id="resultText"></p>
-          <div class="result-metrics">
-            <div class="metric">
-              <span class="metric-value" id="hardnessVal">–</span>
-              <span class="metric-label">geschätzte Wasserhärte (°fH)</span>
-            </div>
-            <div class="metric">
-              <span class="metric-value" id="costVal">–</span>
-              <span class="metric-label">vermeidbare Folgekosten / Jahr</span>
-            </div>
-          </div>
-          <a href="#anmeldung" class="btn btn-primary btn-full" id="resultCta">Wasserrapport als PDF sichern →</a>
-          <button type="button" class="btn btn-text" id="calcReset">Neu berechnen</button>
-        </div>
-      </div>
     </div>
   </section>
 
@@ -477,8 +359,8 @@
 
   <!-- Mobile Sticky-CTA -->
   <div class="sticky-cta">
-    <a href="#rechner" class="btn btn-outline">Wasserrapport</a>
-    <a href="#anmeldung" class="btn btn-primary">Gratis-Beratung</a>
+    <a href="#loesungen" class="btn btn-outline">Lösungen</a>
+    <a href="#anmeldung" class="btn btn-primary">Wasserrapport sichern</a>
   </div>
 
   <script src="script.js"></script>
