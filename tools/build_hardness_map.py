@@ -29,6 +29,17 @@ HARDNESS = {
     "Schaffhausen": 38, "Jura": 40,
 }
 
+# Kantons-Kürzel für die Beschriftung
+ABBR = {
+    "Zürich": "ZH", "Bern": "BE", "Luzern": "LU", "Uri": "UR", "Schwyz": "SZ",
+    "Obwalden": "OW", "Nidwalden": "NW", "Glarus": "GL", "Zug": "ZG",
+    "Fribourg": "FR", "Solothurn": "SO", "Basel-Stadt": "BS",
+    "Basel-Landschaft": "BL", "Schaffhausen": "SH", "Appenzell Ausserrhoden": "AR",
+    "Appenzell Innerrhoden": "AI", "St. Gallen": "SG", "Graubünden": "GR",
+    "Aargau": "AG", "Thurgau": "TG", "Ticino": "TI", "Vaud": "VD", "Valais": "VS",
+    "Neuchâtel": "NE", "Genève": "GE", "Jura": "JU",
+}
+
 # Farbverlauf: weich (hell-cyan) -> mittel (gelb) -> hart (orange) -> sehr hart (rot)
 cmap = LinearSegmentedColormap.from_list("haerte", [
     (0.00, "#cfeaf5"), (0.35, "#9fd6e6"), (0.55, "#f6cd6b"),
@@ -65,6 +76,15 @@ def main():
             ax.add_patch(PathPatch(path, facecolor=color, edgecolor="white", linewidth=0.8))
             for ring in poly:
                 all_lat += [p[1] for p in ring]
+        # Kürzel auf den grössten Polygon-Aussenring setzen
+        ext = max(polys, key=lambda pl: len(pl[0]))[0]
+        cx = sum(p[0] for p in ext) / len(ext)
+        cy = sum(p[1] for p in ext) / len(ext)
+        ab = ABBR.get(name, "")
+        if ab:
+            tcol = "white" if (h is not None and h >= 30) else "#16222e"
+            ax.text(cx, cy, ab, ha="center", va="center", fontsize=8,
+                    fontweight="bold", color=tcol, zorder=5)
 
     ax.autoscale_view()
     ax.relim()
