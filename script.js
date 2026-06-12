@@ -40,7 +40,7 @@ const calcForm = document.getElementById('calcForm');
 const calcResult = document.getElementById('calcResult');
 const calcReset = document.getElementById('calcReset');
 
-if (calcForm && calcReset) {
+if (calcForm) {
 calcForm.addEventListener('submit', (e) => {
   e.preventDefault();
 
@@ -62,37 +62,6 @@ calcForm.addEventListener('submit', (e) => {
   // --- geschätzte jährliche Folgekosten ---
   const cost = Math.round((hardness * 11 + signs * 35 + building * 40) * (0.6 + persons * 0.2) / 10) * 10;
 
-  // --- Bewertung ---
-  let color, title, text, ctaText;
-  if (score >= 75) {
-    color = getCss('--good');
-    title = 'Solide Wasserqualität mit Optimierungspotenzial';
-    text = 'Ihr Wasser ist vergleichsweise gut. Mit gezielten Massnahmen holen Sie noch mehr Komfort und Geräteschutz heraus.';
-    ctaText = 'Wasserrapport als PDF sichern →';
-  } else if (score >= 50) {
-    color = getCss('--warn');
-    title = 'Spürbare Belastung, Handlungsbedarf empfohlen';
-    text = 'Kalk und/oder weitere Faktoren belasten Ihr Wasser merklich. Eine passende Aufbereitung schützt Geräte und Geldbeutel.';
-    ctaText = 'Wasserrapport sichern & Beratung →';
-  } else {
-    color = getCss('--bad');
-    title = 'Deutliche Belastung, wir empfehlen eine Analyse';
-    text = 'Mehrere Faktoren sprechen für eine erhöhte Belastung Ihres Wassers. Eine professionelle Messung vor Ort schafft Klarheit.';
-    ctaText = 'Wasserrapport sichern, Analyse empfohlen →';
-  }
-
-  // --- Score-Ring rendern ---
-  const ring = document.getElementById('scoreRing');
-  const deg = (score / 100) * 360;
-  ring.style.background = `conic-gradient(${color} ${deg}deg, var(--line) ${deg}deg)`;
-
-  document.getElementById('scoreNumber').textContent = score;
-  document.getElementById('resultTitle').textContent = title;
-  document.getElementById('resultText').textContent = text;
-  document.getElementById('hardnessVal').textContent = hardness;
-  document.getElementById('costVal').textContent = 'CHF ' + cost;
-  document.getElementById('resultCta').textContent = ctaText;
-
   // --- Werte ins Anmeldeformular übergeben (versteckte Brevo-Felder) ---
   fScore.value = score;
   fHaerte.value = hardness;
@@ -102,17 +71,61 @@ calcForm.addEventListener('submit', (e) => {
     msgField.value = `Mein Wasser-Score: ${score}/100 · Härte ca. ${hardness} °fH · geschätzte Folgekosten CHF ${cost}/Jahr · Region: ${regionLabel}.`;
   }
 
-  // --- Anzeige umschalten (Formular bleibt sichtbar, Platzhalter -> Ergebnis) ---
-  document.getElementById('calcPlaceholder').hidden = true;
-  calcResult.hidden = false;
+  if (calcResult) {
+    // --- Variante MIT Ergebnis-Grafik (z.B. regenfaenger.html) ---
+    let color, title, text, ctaText;
+    if (score >= 75) {
+      color = getCss('--good');
+      title = 'Solide Wasserqualität mit Optimierungspotenzial';
+      text = 'Ihr Wasser ist vergleichsweise gut. Mit gezielten Massnahmen holen Sie noch mehr Komfort und Geräteschutz heraus.';
+      ctaText = 'Wasserrapport als PDF sichern →';
+    } else if (score >= 50) {
+      color = getCss('--warn');
+      title = 'Spürbare Belastung, Handlungsbedarf empfohlen';
+      text = 'Kalk und/oder weitere Faktoren belasten Ihr Wasser merklich. Eine passende Aufbereitung schützt Geräte und Geldbeutel.';
+      ctaText = 'Wasserrapport sichern & Beratung →';
+    } else {
+      color = getCss('--bad');
+      title = 'Deutliche Belastung, wir empfehlen eine Analyse';
+      text = 'Mehrere Faktoren sprechen für eine erhöhte Belastung Ihres Wassers. Eine professionelle Messung vor Ort schafft Klarheit.';
+      ctaText = 'Wasserrapport sichern, Analyse empfohlen →';
+    }
+    const ring = document.getElementById('scoreRing');
+    const deg = (score / 100) * 360;
+    ring.style.background = `conic-gradient(${color} ${deg}deg, var(--line) ${deg}deg)`;
+    document.getElementById('scoreNumber').textContent = score;
+    document.getElementById('resultTitle').textContent = title;
+    document.getElementById('resultText').textContent = text;
+    document.getElementById('hardnessVal').textContent = hardness;
+    document.getElementById('costVal').textContent = 'CHF ' + cost;
+    document.getElementById('resultCta').textContent = ctaText;
+    const ph = document.getElementById('calcPlaceholder');
+    if (ph) ph.hidden = true;
+    calcResult.hidden = false;
+    return;
+  }
+
+  // --- Variante OHNE Grafik: direkt zum Formular (Daten hinterlegen -> Download) ---
+  const sum = document.getElementById('checkSummary');
+  if (sum) {
+    sum.textContent = `✓ Ihr Wasser-Score: ${score}/100 · Härte ca. ${hardness} °fH · vermeidbare Folgekosten ca. CHF ${cost}/Jahr. Hinterlegen Sie kurz Ihre Daten, um Ihren vollständigen Wasserrapport zu laden.`;
+    sum.hidden = false;
+  }
+  const target = document.getElementById('anmeldung');
+  if (target) target.scrollIntoView({ behavior: 'smooth' });
+  const fn = document.getElementById('firstName');
+  if (fn) setTimeout(() => fn.focus({ preventScroll: true }), 400);
 });
 
-calcReset.addEventListener('click', () => {
-  calcResult.hidden = true;
-  document.getElementById('calcPlaceholder').hidden = false;
-  calcForm.reset();
-  calcForm.scrollIntoView({ behavior: 'smooth', block: 'center' });
-});
+if (calcReset) {
+  calcReset.addEventListener('click', () => {
+    calcResult.hidden = true;
+    const ph = document.getElementById('calcPlaceholder');
+    if (ph) ph.hidden = false;
+    calcForm.reset();
+    calcForm.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  });
+}
 }
 
 function getCss(varName) {

@@ -156,6 +156,15 @@ em { font-style: normal; color: var(--blue-500); }
 .hero-consent input { margin-top: 3px; flex: none; }
 .hero-form-card .form-error { color: var(--bad); font-size: .85rem; margin: 0; }
 .hero-form-foot { margin-top: 14px; font-size: .9rem; color: var(--muted); text-align: center; }
+/* Info-Panel im Wasser-Check (statt Score-Grafik) */
+.calc-info { justify-content: center; background: var(--cyan-50); border-radius: var(--radius); padding: 34px 30px; }
+.calc-info-icon { font-size: 2.4rem; margin-bottom: 10px; }
+.calc-info h3 { color: var(--blue-900); margin-bottom: 16px; }
+.calc-info-list { list-style: none; display: grid; gap: 11px; text-align: left; margin-bottom: 18px; }
+.calc-info-list li { color: var(--ink); font-size: .98rem; }
+.calc-info-foot { color: var(--muted); font-size: .9rem; max-width: 320px; }
+/* Bestätigungs-Banner im Formular nach dem Check */
+.check-summary { background: #e6f7f0; color: #0a7a4f; border-radius: 10px; padding: 12px 14px; font-size: .9rem; font-weight: 600; line-height: 1.4; margin-bottom: 6px; }
 .hero-card-stat { font-size: 1.05rem; color: #eaf4fd; margin-top: 18px; }
 .hero-card-stat strong { display: block; font-size: 2rem; color: var(--teal); font-weight: 800; }
 .hero-card small { color: #9cc2dd; font-size: .72rem; }
