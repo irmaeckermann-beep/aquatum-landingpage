@@ -81,6 +81,12 @@
           <button type="submit" class="btn btn-primary btn-full" id="heroSubmit">Wasserrapport herunterladen</button>
           <p class="form-error" id="heroError" hidden></p>
         </form>
+        <div class="form-success" id="heroSuccess" hidden>
+          <div class="success-check">✓</div>
+          <h3>Ihr Wasserrapport ist bereit!</h3>
+          <p>Vielen Dank. Laden Sie hier Ihren Wasserrapport herunter, wir haben ihn Ihnen zusätzlich per E-Mail geschickt.</p>
+          <a href="assets/wasserrapport.pdf" class="btn btn-primary btn-full" download>Wasserrapport herunterladen (PDF)</a>
+        </div>
         <p class="hero-form-foot">Unsicher? <a href="#rechner">Erst den Wasser-Check machen →</a></p>
       </div>
     </div>
@@ -99,6 +105,7 @@
 
       <div class="duo-grid">
         <article class="duo-card">
+          <div class="duo-photo"><img src="assets/regenwasser.webp" alt="Reines Wasser aus aufbereitetem Regenwasser" /></div>
           <div class="duo-logo"><img src="assets/logo-regenfaenger.svg" alt="Regenfänger" /></div>
           <h3>Aus Regenwasser wird Trinkwasser</h3>
           <p>
@@ -111,10 +118,11 @@
             <li>✓ Trinkwasser in Quellqualität aus eigenem Regenwasser</li>
             <li>✓ Nachhaltig, ideal für Haus &amp; Garten</li>
           </ul>
-          <a href="regenfaenger.html" class="btn btn-outline btn-full">Mehr zum Regenfänger →</a>
+          <button type="button" class="btn btn-outline btn-full pkg-cta" data-paket="Regenfänger">Beratung anfordern →</button>
         </article>
 
         <article class="duo-card">
+          <div class="duo-photo"><img src="assets/hero-wasser.jpg" alt="Klares, gefiltertes Trinkwasser im Glas" /></div>
           <div class="duo-logo"><img src="assets/logo-aquatum.svg" alt="Aquatum" /></div>
           <h3>Gefiltertes Wasser für jeden Haushalt</h3>
           <p>
@@ -143,6 +151,11 @@
         wie „rein". Vier Belastungen treffen besonders viele Schweizer Haushalte, und das
         meist jahrelang unbemerkt:
       </p>
+
+      <figure class="problem-figure">
+        <img src="assets/problem-kalk.jpg" alt="Verkalkter, korrodierter Wasserhahn als Folge belasteten Wassers" />
+        <figcaption>Das wächst gerade in Ihren Leitungen, nur sehen Sie es nicht, bis die Waschmaschine streikt, der Boiler frisst und die Rechnung kommt.</figcaption>
+      </figure>
 
       <div class="problem-grid">
         <article class="problem-card">
@@ -209,6 +222,20 @@
         <img src="assets/siegel-kundenversprechen.png" alt="Kundenversprechen" />
         <img src="assets/handwerker-award.webp" alt="Handwerker Award 2026/2027" />
         <img src="assets/top-betrieb.webp" alt="Top Betrieb 2026/2027" />
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ BILD-BAND / CTA ============ -->
+  <section class="image-band">
+    <div class="image-band-photo">
+      <img src="assets/experte-beratung.jpg" alt="Wasser-Techniker prüft und wartet eine Wasseraufbereitungs-Anlage" />
+    </div>
+    <div class="image-band-overlay">
+      <div class="container">
+        <h2>Persönliche Beratung durch echte Wasser-Experten</h2>
+        <p>Kompetent, unabhängig und ohne Verkaufsdruck, direkt bei Ihnen zuhause.</p>
+        <a href="#rechner" class="btn btn-primary">Jetzt Wasser-Check machen</a>
       </div>
     </div>
   </section>
@@ -397,8 +424,9 @@
 
         <div class="form-success" id="formSuccess" hidden>
           <div class="success-check">✓</div>
-          <h3>Fast geschafft!</h3>
-          <p>Wir haben Ihnen eine E-Mail geschickt. Bitte bestätigen Sie darin kurz, danach erhalten Sie Ihren Wasserrapport.</p>
+          <h3>Ihr Wasserrapport ist bereit!</h3>
+          <p>Vielen Dank. Laden Sie hier Ihren persönlichen Wasserrapport herunter. Zusätzlich haben wir Ihnen eine E-Mail geschickt.</p>
+          <a href="assets/wasserrapport.pdf" class="btn btn-primary btn-full" download>Wasserrapport herunterladen (PDF)</a>
         </div>
       </form>
     </div>

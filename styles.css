@@ -356,6 +356,9 @@ em { font-style: normal; color: var(--blue-500); }
   border-radius: 12px; padding: 14px 20px; margin-bottom: 22px;
 }
 .duo-logo img { height: 46px; width: auto; display: block; }
+.duo-photo { border-radius: 12px; overflow: hidden; margin-bottom: 18px; }
+.duo-photo img { width: 100%; height: 180px; object-fit: cover; display: block; transition: transform .4s ease; }
+.duo-card:hover .duo-photo img { transform: scale(1.04); }
 .duo-icon {
   width: 60px; height: 60px; display: grid; place-items: center; font-size: 1.9rem;
   background: var(--cyan-100); border-radius: 16px; margin-bottom: 20px;

@@ -219,13 +219,16 @@ signupForm.addEventListener('submit', async (e) => {
       });
       // no-cors liefert keine lesbare Antwort -> optimistisch als Erfolg werten
     }
-    // Weiterleitung auf die Dankesseite (= Conversion-/Lead-Seite, loest dort den Lead-Event aus)
-    window.location.href = 'danke.html';
+    // Inline-Erfolg: Download-Link erscheint direkt im Formular (kein Seitenwechsel)
+    [...signupForm.children].forEach((el) => { if (el !== formSuccess) el.style.display = 'none'; });
+    formSuccess.hidden = false;
+    formSuccess.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    if (window.aquatumTrackLead) window.aquatumTrackLead(leadEventId); // Lead-Pixel inline auslösen
     return;
   } catch (err) {
     showError('Es gab ein Problem bei der Anmeldung. Bitte versuchen Sie es erneut oder rufen Sie uns an: +41 61 851 00 89.');
     submitBtn.disabled = false;
-    submitBtn.textContent = 'Jetzt anmelden & Auswertung erhalten';
+    submitBtn.textContent = 'Wasserrapport herunterladen';
   }
 });
 
@@ -293,7 +296,11 @@ if (heroForm) {
           body: data.toString()
         });
       }
-      window.location.href = 'danke.html';
+      // Inline-Erfolg: Download-Link erscheint direkt (kein Seitenwechsel)
+      heroForm.style.display = 'none';
+      const hs = document.getElementById('heroSuccess');
+      if (hs) { hs.hidden = false; hs.scrollIntoView({ behavior: 'smooth', block: 'center' }); }
+      if (window.aquatumTrackLead) window.aquatumTrackLead(eid); // Lead-Pixel inline auslösen
       return;
     } catch (err) {
       showHeroError('Es gab ein Problem. Bitte rufen Sie uns an: +41 61 851 00 89.');
