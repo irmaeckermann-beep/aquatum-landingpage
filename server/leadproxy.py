@@ -33,6 +33,24 @@ LIST_ID = int(os.environ.get("BREVO_LIST_ID", "0") or "0")
 SENDER_EMAIL = os.environ.get("BREVO_SENDER_EMAIL", "")
 SENDER_NAME = os.environ.get("BREVO_SENDER_NAME", "Aquatum")
 NOTIFY_EMAIL = os.environ.get("LEAD_NOTIFY_EMAIL", "")
+# Feste zusätzliche Empfänger der Lead-Benachrichtigung (immer mit dabei).
+EXTRA_NOTIFY = ["info@regenfaenger.ch"]
+
+
+def notify_recipients():
+    """Empfängerliste für die Lead-Benachrichtigung: LEAD_NOTIFY_EMAIL (auch
+    mehrere, durch Komma/Semikolon getrennt) plus die festen EXTRA_NOTIFY,
+    dedupliziert und ohne Leereinträge."""
+    raw = re.split(r"[,;\s]+", NOTIFY_EMAIL or "")
+    seen, out = set(), []
+    for e in [x.strip() for x in raw] + EXTRA_NOTIFY:
+        k = e.lower()
+        if e and EMAIL_RE.match(e) and k not in seen:
+            seen.add(k)
+            out.append(e)
+    return out
+
+
 BREVO_API = "https://api.brevo.com/v3"
 EMAIL_RE = re.compile(r"^[^\s@]+@[^\s@]+\.[^\s@]+$")
 
@@ -264,8 +282,9 @@ def send_eval_mail(f):
 
 
 def send_notify_mail(f):
-    """Interne Benachrichtigung an das Aquatum-/Leadhunter-Team bei jedem Lead."""
-    if not SENDER_EMAIL or not NOTIFY_EMAIL:
+    """Interne Benachrichtigung an das Team bei jedem Lead (inkl. info@regenfaenger.ch)."""
+    recipients = notify_recipients()
+    if not SENDER_EMAIL or not recipients:
         return None, "no notify recipient configured"
     name = (f.get("FIRSTNAME", "") + " " + f.get("LASTNAME", "")).strip() or "—"
     fields = [
@@ -296,7 +315,7 @@ def send_notify_mail(f):
 </div></body></html>"""
     payload = {
         "sender": {"name": SENDER_NAME, "email": SENDER_EMAIL},
-        "to": [{"email": NOTIFY_EMAIL}],
+        "to": [{"email": e} for e in recipients],
         "replyTo": {"email": f["EMAIL"], "name": name if name != "—" else f["EMAIL"]},
         "subject": f"Neuer Lead · {name} · Score {f.get('SCORE', '?')}",
         "htmlContent": html,
@@ -383,7 +402,7 @@ class Handler(BaseHTTPRequestHandler):
 
         nstatus, nresp = send_notify_mail(f)
         if nstatus in (200, 201):
-            log(f"[lead] notify OK <{NOTIFY_EMAIL}>")
+            log(f"[lead] notify OK <{', '.join(notify_recipients())}>")
         elif nstatus is not None:
             log(f"[lead] notify FAIL {nstatus}: {str(nresp)[:200]}")
 
@@ -406,7 +425,7 @@ def main():
     if not API_KEY:
         log("FATAL: BREVO_API_KEY fehlt"); sys.exit(1)
     httpd = ThreadingHTTPServer((HOST, PORT), Handler)
-    log(f"aquatum-leadproxy listening on {HOST}:{PORT} (list={LIST_ID}, sender={SENDER_EMAIL or 'none'}, notify={NOTIFY_EMAIL or 'none'}, capi={'on:' + META_PIXEL_ID if (META_PIXEL_ID and META_CAPI_TOKEN) else 'off'}, leads_file={LEADS_FILE or 'off'}, admin={'on' if ADMIN_TOKEN else 'OFF (ADMIN_TOKEN fehlt)'})")
+    log(f"aquatum-leadproxy listening on {HOST}:{PORT} (list={LIST_ID}, sender={SENDER_EMAIL or 'none'}, notify={', '.join(notify_recipients()) or 'none'}, capi={'on:' + META_PIXEL_ID if (META_PIXEL_ID and META_CAPI_TOKEN) else 'off'}, leads_file={LEADS_FILE or 'off'}, admin={'on' if ADMIN_TOKEN else 'OFF (ADMIN_TOKEN fehlt)'})")
     httpd.serve_forever()
 
 
