@@ -238,6 +238,9 @@ story.append(Paragraph("Je dunkler, desto härter: Besonders betroffen sind <b>J
                        "Basel-Landschaft, Neuenburg, Solothurn und Aargau</b> sowie das Mittelland. "
                        "Weich ist das Wasser vor allem im Tessin, in Graubünden und am Alpenrand. "
                        "Schon ab ca. 25 °fH verursacht Kalk spürbare Folgekosten.", body))
+story.append(Spacer(1, 4))
+story.append(Paragraph("Typische Richtwerte je Kanton; die tatsächliche Wasserhärte variiert je nach "
+                       "Gemeinde und Wasserquelle. Kartengrundlage: öffentliche Kantonsgeometrie.", small))
 story.append(PageBreak())
 
 # ============ SEITE 3 – LÖSUNGEN ============
