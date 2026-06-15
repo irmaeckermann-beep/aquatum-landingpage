@@ -73,7 +73,8 @@ em { font-style: normal; color: var(--blue-500); }
 .logo { display: inline-flex; align-items: center; }
 .logo img { height: 38px; width: auto; display: block; }
 .logo-pair { gap: 16px; }
-.logo-pair img { height: 30px; }
+.logo-pair img { height: 28px; }
+.logo-pair > img:last-of-type { height: 38px; }  /* Aquatum-Logo (mit swiss made) optisch angleichen */
 .logo-sep { width: 1px; height: 26px; background: var(--line); display: inline-block; flex: none; }
 .nav { display: flex; align-items: center; gap: 28px; }
 .nav a { color: var(--ink); font-weight: 500; font-size: .96rem; }
