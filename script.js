@@ -298,6 +298,8 @@ if (heroForm) {
       }
       // Inline-Erfolg: Download-Link erscheint direkt (kein Seitenwechsel)
       heroForm.style.display = 'none';
+      const foot = heroForm.parentElement.querySelector('.hero-form-foot');
+      if (foot) foot.style.display = 'none';
       const hs = document.getElementById('heroSuccess');
       if (hs) { hs.hidden = false; hs.scrollIntoView({ behavior: 'smooth', block: 'center' }); }
       if (window.aquatumTrackLead) window.aquatumTrackLead(eid); // Lead-Pixel inline auslösen
