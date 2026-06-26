@@ -142,10 +142,10 @@ function renderCostBreakdown(total) {
   if (!total || total <= 0) { box.hidden = true; return; }
 
   const parts = [
-    { icon: '🔥', label: 'Mehr Energie – verkalkter Boiler & Heizstab', share: 0.40 },
-    { icon: '🧺', label: 'Kürzere Lebensdauer von Geräten & Armaturen', share: 0.30 },
-    { icon: '🧴', label: 'Entkalker & Reinigungsmittel', share: 0.18 },
-    { icon: '🚿', label: 'Mehr Seife, Shampoo & Waschmittel', share: 0.12 },
+    { label: 'Mehr Energie – verkalkter Boiler & Heizstab', share: 0.40 },
+    { label: 'Kürzere Lebensdauer von Geräten & Armaturen', share: 0.30 },
+    { label: 'Entkalker & Reinigungsmittel', share: 0.18 },
+    { label: 'Mehr Seife, Shampoo & Waschmittel', share: 0.12 },
   ];
   const vals = parts.map((p) => Math.round((total * p.share) / 5) * 5);
   // Rundungsdifferenz auf den grössten Posten legen, damit die Summe exakt stimmt
@@ -153,7 +153,7 @@ function renderCostBreakdown(total) {
 
   if (totalEl) totalEl.textContent = total.toLocaleString('de-CH');
   list.innerHTML = parts
-    .map((p, i) => `<li><span class="cb-label">${p.icon} ${p.label}</span><span class="cb-amount">CHF ${vals[i]}</span></li>`)
+    .map((p, i) => `<li><span class="cb-label">${p.label}</span><span class="cb-amount">CHF ${vals[i]}</span></li>`)
     .join('');
   box.hidden = false;
 }
