@@ -273,7 +273,7 @@ em { font-style: normal; color: var(--blue-500); }
   display: grid; grid-template-columns: 1fr 1fr; gap: 30px; align-items: stretch;
   margin-top: 12px;
 }
-.calc-form, .calc-result {
+.calc-form, .calc-result, .calc-placeholder {
   background: #fff; border: 1px solid var(--line); border-radius: var(--radius);
   padding: 32px; box-shadow: var(--shadow);
 }
@@ -323,6 +323,12 @@ em { font-style: normal; color: var(--blue-500); }
 .metric { background: var(--cyan-50); border-radius: 12px; padding: 16px; }
 .metric-value { display: block; font-size: 1.5rem; font-weight: 800; color: var(--blue-700); }
 .metric-label { font-size: .78rem; color: var(--muted); }
+.calc-result .btn { width: 100%; }
+.calc-reset {
+  background: none; border: 0; color: var(--blue-700); cursor: pointer;
+  font: inherit; text-decoration: underline; margin-top: 12px; padding: 4px;
+}
+.calc-reset:hover { color: var(--blue-900); }
 
 /* ---------- Solution ---------- */
 .solution-split { display: grid; grid-template-columns: 0.85fr 1.15fr; gap: 30px; align-items: stretch; }
@@ -398,7 +404,7 @@ em { font-style: normal; color: var(--blue-500); }
 .duo-card .btn { margin-top: auto; }
 
 /* ---------- Testimonials ---------- */
-.testi-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 40px; }
+.testi-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 380px)); justify-content: center; gap: 24px; margin-top: 40px; }
 .testi-card {
   background: #fff; border: 1px solid var(--line); border-radius: var(--radius);
   padding: 28px; margin: 0; box-shadow: var(--shadow);

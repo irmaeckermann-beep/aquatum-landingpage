@@ -220,18 +220,13 @@
       <div class="testi-grid">
         <figure class="testi-card">
           <div class="stars">★★★★★</div>
-          <blockquote>«Endlich keine Kalkränder mehr und das Wasser schmeckt viel besser. Die Beratung war kompetent und ohne Druck.»</blockquote>
-          <figcaption>— M. Keller, Aargau</figcaption>
+          <blockquote>«Ich habe eine Wasserfilteranlage für meine Wohnung gekauft und bin sehr zufrieden.»</blockquote>
+          <figcaption>— Irma Eckermann</figcaption>
         </figure>
         <figure class="testi-card">
           <div class="stars">★★★★★</div>
-          <blockquote>«In unserer Mietwohnung war der Filter in Minuten am Hahn. Riesiger Unterschied im Geschmack.»</blockquote>
-          <figcaption>— S. &amp; T. Bühler, Region Basel</figcaption>
-        </figure>
-        <figure class="testi-card">
-          <div class="stars">★★★★★</div>
-          <blockquote>«Mit dem Regenfänger nutzen wir heute unser eigenes Wasser. Wasserrechnung spürbar gesunken.»</blockquote>
-          <figcaption>— Familie Rohner, Solothurn</figcaption>
+          <blockquote>«Ich habe ebenfalls eine Wasserfilteranlage und bin sehr zufrieden damit.»</blockquote>
+          <figcaption>— M. Dos Santos</figcaption>
         </figure>
       </div>
     </div>
@@ -350,16 +345,34 @@
           <button type="submit" class="btn btn-primary btn-full">Weiter zum Wasserrapport →</button>
         </form>
 
-        <div class="calc-result calc-info">
-          <div class="calc-info-icon">📋</div>
-          <h3>Das steckt in Ihrem Wasserrapport</h3>
-          <ul class="calc-info-list">
-            <li>✓ Ihr persönlicher Wasser-Score</li>
-            <li>✓ Geschätzte Wasserhärte Ihrer Region</li>
-            <li>✓ Vermeidbare Folgekosten pro Jahr</li>
-            <li>✓ Empfehlung: Filter, Regenfänger oder beides</li>
-          </ul>
-          <p class="calc-info-foot">Nach dem Check hinterlegen Sie Ihre Daten und laden den Wasserrapport als PDF.</p>
+        <!-- Platzhalter, bevor der Check ausgefüllt ist -->
+        <div class="calc-placeholder" id="calcPlaceholder">
+          <div class="placeholder-ring">?</div>
+          <h3>Ihr persönlicher Wasserrapport</h3>
+          <p>Beantworten Sie die vier Fragen links – Ihr individueller Wasser-Score,
+            die geschätzte Härte und Ihre Folgekosten erscheinen sofort hier.</p>
+        </div>
+
+        <!-- Individueller Wasserrapport (erscheint nach dem Check) -->
+        <div class="calc-result" id="calcResult" hidden aria-live="polite">
+          <div class="score-ring" id="scoreRing">
+            <span class="score-number" id="scoreNumber">–</span>
+            <span class="score-label">Wasser-Score</span>
+          </div>
+          <h3 id="resultTitle">–</h3>
+          <p id="resultText">–</p>
+          <div class="result-metrics">
+            <div class="metric">
+              <span class="metric-value"><span id="hardnessVal">–</span> °fH</span>
+              <span class="metric-label">geschätzte Wasserhärte</span>
+            </div>
+            <div class="metric">
+              <span class="metric-value" id="costVal">–</span>
+              <span class="metric-label">vermeidbare Folgekosten / Jahr</span>
+            </div>
+          </div>
+          <a href="#anmeldung" class="btn btn-primary btn-full" id="resultCta">Wasserrapport sichern →</a>
+          <button type="button" class="calc-reset" id="calcReset">Neue Berechnung</button>
         </div>
       </div>
     </div>
