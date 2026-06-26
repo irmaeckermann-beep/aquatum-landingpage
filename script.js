@@ -86,9 +86,9 @@ calcForm.addEventListener('submit', (e) => {
       ctaText = 'Wasserrapport sichern & Beratung →';
     } else {
       color = getCss('--bad');
-      title = 'Deutliche Belastung, wir empfehlen eine Analyse';
-      text = 'Mehrere Faktoren sprechen für eine erhöhte Belastung Ihres Wassers. Eine professionelle Messung vor Ort schafft Klarheit.';
-      ctaText = 'Wasserrapport sichern, Analyse empfohlen →';
+      title = 'Deutliche Belastung – wir empfehlen eine Beratung';
+      text = 'Mehrere Faktoren sprechen für eine erhöhte Belastung Ihres Wassers. In einer kostenlosen Beratung finden wir gemeinsam die passende Lösung für Sie.';
+      ctaText = 'Wasserrapport sichern & Beratung →';
     }
     const ring = document.getElementById('scoreRing');
     const deg = (score / 100) * 360;
