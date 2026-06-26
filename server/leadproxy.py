@@ -270,7 +270,7 @@ def send_eval_mail(f):
 </table>
 <p>Ein Experte von Aquatum meldet sich für Ihre <strong>kostenlose Beratung vor Ort</strong>. So erfahren Sie genau, welche Wasseraufbereitung sich für Sie lohnt.</p>
 <p>Herzliche Grüsse<br>Ihr Aquatum-Team</p>
-<p style="font-size:12px;color:#7488a0;margin-top:24px">Aquatum AG · Wasser-Experten Schweiz · +41 61 851 00 89 · aquatum.ch</p>
+<p style="font-size:12px;color:#7488a0;margin-top:24px">Aquatum AG · Wasser-Experten Schweiz · +41 61 851 00 89 · <a href="https://www.wasserfilter-beratung.ch/" style="color:#7488a0">www.wasserfilter-beratung.ch</a></p>
 </div></body></html>"""
     payload = {
         "sender": {"name": SENDER_NAME, "email": SENDER_EMAIL},
@@ -311,7 +311,7 @@ def send_notify_mail(f):
 <h1 style="font-size:20px;margin:0 0 4px">Neuer Lead · Aquatum</h1>
 <p style="margin:0 0 16px;color:#7488a0">{name} · Score {f.get('SCORE', '?')}/100</p>
 <table style="width:100%;border-collapse:collapse;font-size:14px">{rows}</table>
-<p style="font-size:12px;color:#7488a0;margin-top:20px">Automatische Benachrichtigung von aquatum.ch · Antwort geht direkt an den Lead.</p>
+<p style="font-size:12px;color:#7488a0;margin-top:20px">Automatische Benachrichtigung von www.wasserfilter-beratung.ch · Antwort geht direkt an den Lead.</p>
 </div></body></html>"""
     payload = {
         "sender": {"name": SENDER_NAME, "email": SENDER_EMAIL},
