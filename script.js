@@ -368,3 +368,68 @@ if (chMap && chMap.dataset.src) {
     })
     .catch(() => { /* Karte optional */ });
 }
+
+// ---------- Personalisierter Wasserrapport-Download (clientseitig via pdf-lib) ----------
+function _val(id) { const el = document.getElementById(id); return el ? el.value.trim() : ''; }
+
+function _loadPdfLib() {
+  return new Promise((resolve, reject) => {
+    if (window.PDFLib) return resolve();
+    const s = document.createElement('script');
+    s.src = 'assets/pdf-lib.min.js';
+    s.onload = () => resolve();
+    s.onerror = reject;
+    document.head.appendChild(s);
+  });
+}
+
+async function downloadWasserrapport(vals) {
+  const BASE = 'assets/wasserrapport.pdf';
+  try {
+    await _loadPdfLib();
+    if (!window.PDFLib) throw new Error('pdf-lib fehlt');
+    const { PDFDocument, StandardFonts, rgb } = window.PDFLib;
+    const bytes = await fetch(BASE).then((r) => r.arrayBuffer());
+    const doc = await PDFDocument.load(bytes);
+    const page = doc.getPages()[0];
+    const width = page.getSize().width;
+    const bold = await doc.embedFont(StandardFonts.HelveticaBold);
+    const reg = await doc.embedFont(StandardFonts.Helvetica);
+    const blue = rgb(0.039, 0.145, 0.251), muted = rgb(0.353, 0.42, 0.471), orange = rgb(0.925, 0.4, 0.043);
+    const m = 45, boxY = 66, boxH = 98, tx = m + 16;
+    page.drawRectangle({ x: m, y: boxY, width: width - 2 * m, height: boxH, color: rgb(0.933, 0.969, 0.988) });
+    page.drawRectangle({ x: m, y: boxY, width: 4, height: boxH, color: orange });
+    let y = boxY + boxH - 22;
+    page.drawText('IHR PERSÖNLICHES ERGEBNIS', { x: tx, y, size: 9, font: bold, color: orange });
+    y -= 21;
+    page.drawText(vals.name ? ('Für ' + vals.name) : 'Ihr Wasser-Check', { x: tx, y, size: 13, font: bold, color: blue });
+    y -= 19;
+    if (vals.score) {
+      page.drawText('Wasser-Score ' + vals.score + '/100   ·   Härte ca. ' + (vals.haerte || '-') + ' °fH   ·   Folgekosten ca. CHF ' + (vals.kosten || '-') + '/Jahr',
+        { x: tx, y, size: 10.5, font: reg, color: blue });
+      y -= 16;
+    }
+    const region = vals.region || vals.ort;
+    if (region) page.drawText('Region / Ort: ' + region, { x: tx, y, size: 9.5, font: reg, color: muted });
+    const out = await doc.save();
+    const url = URL.createObjectURL(new Blob([out], { type: 'application/pdf' }));
+    const a = document.createElement('a');
+    a.href = url; a.download = 'Wasserrapport-Aquatum.pdf'; a.click();
+    setTimeout(() => URL.revokeObjectURL(url), 2000);
+  } catch (e) {
+    // Fallback: unveränderte PDF herunterladen
+    const a = document.createElement('a');
+    a.href = BASE; a.download = 'Wasserrapport-Aquatum.pdf'; a.click();
+  }
+}
+
+const _dlMain = document.querySelector('#formSuccess a[download]');
+if (_dlMain) _dlMain.addEventListener('click', (e) => {
+  e.preventDefault();
+  downloadWasserrapport({ name: _val('firstName'), score: _val('fScore'), haerte: _val('fHaerte'), kosten: _val('fKosten'), region: _val('fRegion'), ort: _val('zip') });
+});
+const _dlHero = document.querySelector('#heroSuccess a[download]');
+if (_dlHero) _dlHero.addEventListener('click', (e) => {
+  e.preventDefault();
+  downloadWasserrapport({ name: _val('hfFirst'), ort: _val('hfZip') });
+});
