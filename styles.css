@@ -335,6 +335,23 @@ em { font-style: normal; color: var(--blue-500); }
 }
 .result-note strong { color: var(--blue-700); }
 
+/* Konkrete Kosten-Aufschlüsselung */
+.cost-breakdown {
+  width: 100%; text-align: left; background: var(--cyan-50);
+  border: 1px solid var(--cyan-100); border-radius: 12px;
+  padding: 16px 18px; margin: 0 0 18px;
+}
+.cb-title { font-size: .88rem; color: var(--ink); margin: 0 0 10px; }
+.cb-title strong { color: var(--blue-700); }
+.cb-list { list-style: none; margin: 0; padding: 0; }
+.cb-list li {
+  display: flex; justify-content: space-between; align-items: baseline; gap: 12px;
+  padding: 7px 0; border-bottom: 1px dashed var(--cyan-100); font-size: .9rem;
+}
+.cb-list li:last-child { border-bottom: 0; }
+.cb-label { color: var(--ink); }
+.cb-amount { font-weight: 700; color: var(--blue-700); white-space: nowrap; }
+
 /* ---------- Changelog (dezent im Footer, eingeklappt) ---------- */
 .footer-changelog { flex-basis: 100%; font-size: .74rem; color: #7ea6c6; }
 .footer-changelog summary {

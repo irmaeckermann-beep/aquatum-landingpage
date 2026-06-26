@@ -371,6 +371,13 @@
               <span class="metric-label">vermeidbare Folgekosten / Jahr</span>
             </div>
           </div>
+
+          <!-- Konkrete Aufschlüsselung der Folgekosten -->
+          <div class="cost-breakdown" id="costBreakdown" hidden>
+            <p class="cb-title">Woraus sich diese <strong>CHF <span id="cbTotal">–</span> pro Jahr</strong> typischerweise zusammensetzen:</p>
+            <ul class="cb-list" id="cbList"></ul>
+          </div>
+
           <p class="result-note">Schätzung auf Basis regionaler Richtwerte – Ihr Wasser wird dabei <strong>nicht gemessen</strong>. Die tatsächlichen Werte variieren je nach Gemeinde und Hausinstallation.</p>
           <a href="#anmeldung" class="btn btn-primary btn-full" id="resultCta">Wasserrapport sichern →</a>
           <button type="button" class="calc-reset" id="calcReset">Neue Berechnung</button>

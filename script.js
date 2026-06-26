@@ -98,6 +98,7 @@ calcForm.addEventListener('submit', (e) => {
     document.getElementById('resultText').textContent = text;
     document.getElementById('hardnessVal').textContent = hardness;
     document.getElementById('costVal').textContent = 'CHF ' + cost;
+    renderCostBreakdown(cost);
     document.getElementById('resultCta').textContent = ctaText;
     const ph = document.getElementById('calcPlaceholder');
     if (ph) ph.hidden = true;
@@ -130,6 +131,31 @@ if (calcReset) {
 
 function getCss(varName) {
   return getComputedStyle(document.documentElement).getPropertyValue(varName).trim();
+}
+
+// Konkrete Aufschlüsselung der vermeidbaren Folgekosten (Richtwert-Anteile, Summe = Gesamtbetrag)
+function renderCostBreakdown(total) {
+  const box = document.getElementById('costBreakdown');
+  const list = document.getElementById('cbList');
+  const totalEl = document.getElementById('cbTotal');
+  if (!box || !list) return;
+  if (!total || total <= 0) { box.hidden = true; return; }
+
+  const parts = [
+    { icon: '🔥', label: 'Mehr Energie – verkalkter Boiler & Heizstab', share: 0.40 },
+    { icon: '🧺', label: 'Kürzere Lebensdauer von Geräten & Armaturen', share: 0.30 },
+    { icon: '🧴', label: 'Entkalker & Reinigungsmittel', share: 0.18 },
+    { icon: '🚿', label: 'Mehr Seife, Shampoo & Waschmittel', share: 0.12 },
+  ];
+  const vals = parts.map((p) => Math.round((total * p.share) / 5) * 5);
+  // Rundungsdifferenz auf den grössten Posten legen, damit die Summe exakt stimmt
+  vals[0] += total - vals.reduce((a, b) => a + b, 0);
+
+  if (totalEl) totalEl.textContent = total.toLocaleString('de-CH');
+  list.innerHTML = parts
+    .map((p, i) => `<li><span class="cb-label">${p.icon} ${p.label}</span><span class="cb-amount">CHF ${vals[i]}</span></li>`)
+    .join('');
+  box.hidden = false;
 }
 
 // ---------- Paket-CTAs ("Konzepte verkaufen") ----------
